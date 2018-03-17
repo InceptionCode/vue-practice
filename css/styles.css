@@ -1,0 +1,84 @@
+* {
+    margin: 0;
+    font-family: Helvetica, sans-serif;
+}
+
+h1 {
+    color: limegreen;
+    width: 20vw;
+    margin: 20px auto;
+}
+
+input {
+    display: block;
+    width: 50vw;
+    margin: 10px auto;
+    padding: 10px;
+    font-size: 20px;
+    border: none;
+    border-bottom: 2px solid rgba(173, 216, 230, 0.5);
+}
+
+input:focus {
+    outline: none;
+    border-bottom: 2px solid lightblue;
+}
+
+input:hover {
+    outline: none;
+    border-bottom: 2px solid royalblue;
+}
+
+ul {
+    list-style: none;
+    width: 50vw;
+    padding: 0;
+    margin: 30px auto;
+    font-size: 18px;
+}
+
+li {
+    margin-top: 10px;
+}
+
+span {
+    padding: 5px;
+    background: gray;
+    margin-left: 5px;
+    border-radius: 50%;
+}
+
+span:hover {
+    cursor: pointer;
+}
+
+button {
+    background: limegreen;
+    display: block;
+    padding: 8px 16px;
+    width: 125px;
+    margin: 10px auto;
+    font-size: 16px;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+button:focus {
+    outline: none;
+    border: 1px solid #000;
+}
+
+.showEdit {
+    text-align: center;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    padding: 20px 0;
+    font-size: 20px;
+}
+
+.editing {
+    background: darkred;
+    color: white;
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDo</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>Practice App 1</h1>
+        <br>
+        <input type="text" placeholder="Type in todo here...." v-model = "input" v-on:keyup.enter= "addTodo">
+        <ul>
+            <li v-for = "todo in todos"
+                :key = "todo.id">
+                {{todo.text}}
+                <span class="delete" v-on:click = "deleteTodo(todo.id)">x</span>
+                <span class="edit" v-on:click = "editTodo(todo.id)">e</span>
+            </li>
+        </ul>
+        <p :class="{editing: editing, showEdit: true}">
+            Edit mode {{editing}}
+        </p>
+        <br>
+        <button v-on:click ="addTodo">Add ToDo</button>
+    </div>
+    
+    <script src="../js/todo-app.js"></script>
+</body>
+</html>
