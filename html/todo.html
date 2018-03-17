@@ -17,8 +17,8 @@
             <li v-for = "todo in todos"
                 :key = "todo.id">
                 {{todo.text}}
-                <span class="delete" v-on:click = "deleteTodo(todo.id)">x</span>
-                <span class="edit" v-on:click = "editTodo(todo.id)">e</span>
+                <span class="delete" title = "delete" v-on:click = "deleteTodo(todo.id)">x</span>
+                <span class="edit" title = "edit" v-on:click = "editTodo(todo.id)">e</span>
             </li>
         </ul>
         <p :class="classes">

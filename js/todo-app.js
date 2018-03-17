@@ -18,12 +18,6 @@ var app = new Vue({
             }
         }
     },
-    watch: {
-        editingID: function (newID, oldID) {
-            updateTodos = this.todos.filter(todo => todo.id !== newID);
-            this.todos = updateTodos;
-        }
-    },
     methods: {
         clearInput: function() {
             this.input = "";
@@ -35,6 +29,7 @@ var app = new Vue({
                     text: this.input
                 });
                 this.editing = false;
+                this.editingID = "";
             } else if(this.input !== "") {
                 this.todos.push({
                     id: Math.random(),
@@ -42,6 +37,10 @@ var app = new Vue({
                 });
             }
             this.clearInput();
+        },
+        updateTodos: function (newID) {
+            updatedTodos = this.todos.filter(todo => todo.id !== newID);
+            this.todos = updatedTodos;
         },
         deleteTodo: function (id) {
             let newTodos = this.todos.filter(todo => todo.id !== id);
@@ -57,6 +56,7 @@ var app = new Vue({
                         return todo.text;
                     }
                 });
+            this.updateTodos(id);
             editingTodo.splice(0,editingTodo.findIndex(this.findValue));
             this.input = editingTodo[0];
             this.editing = true;
