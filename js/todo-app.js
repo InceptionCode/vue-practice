@@ -11,6 +11,12 @@ var app = new Vue({
         editingID: ""
     },
     computed: {
+        classes: function () {
+            return {
+                showEdit: true,
+                editing: this.editing
+            }
+        }
     },
     watch: {
         editingID: function (newID, oldID) {

@@ -21,8 +21,9 @@
                 <span class="edit" v-on:click = "editTodo(todo.id)">e</span>
             </li>
         </ul>
-        <p :class="{editing: editing, showEdit: true}">
-            Edit mode {{editing}}
+        <p :class="classes">
+            Edit mode <strong v-if="editing">On</strong>
+            <strong v-else>Off</strong>
         </p>
         <br>
         <button v-on:click ="addTodo">Add ToDo</button>
