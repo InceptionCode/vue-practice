@@ -68,3 +68,7 @@ typings/
 
 # lite-server
 bs-config.js
+
+# yarn / cli 
+yarn.lock 
+package.json
