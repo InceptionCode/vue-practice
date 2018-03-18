@@ -4,9 +4,8 @@
     <img src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
     <br>
-    <div id="practice-project">
-      <Main />
-    </div>
+    <Main id="practice-project" >
+    </Main>
   </div>
 </template>
 
