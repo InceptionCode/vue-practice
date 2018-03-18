@@ -8,10 +8,11 @@ var app = new Vue({
         ],
         input: "",
         editing: false,
-        editingID: ""
+        editingID: "",
+        completed: false
     },
     computed: {
-        classes: function () {
+        editingClasses: function () {
             return {
                 showEdit: true,
                 editing: this.editing
@@ -60,6 +61,27 @@ var app = new Vue({
             editingTodo.splice(0,editingTodo.findIndex(this.findValue));
             this.input = editingTodo[0];
             this.editing = true;
+        },
+        createNewList: function(List) {
+                List.forEach( value =>{
+                    let id = value[1];
+                    let obj =  {
+                        id,
+                        text: value[0]
+                    };
+                    this.todos.push(obj);
+                    this.todos.shift();
+                });
+        },
+        sortList: function () {
+            let todoText = this.todos.map(item => [item.text, item.id]),
+                sortedTodos = todoText.sort(); 
+                this.createNewList(sortedTodos);
+        },
+        reverseList: function () {
+            let todoText = this.todos.map(item => [item.text, item.id]),
+                reverseTodos = todoText.reverse(); 
+                this.createNewList(reverseTodos);
         }
     }
 

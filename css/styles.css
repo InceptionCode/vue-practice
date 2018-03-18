@@ -42,32 +42,56 @@ li {
 }
 
 span {
+    display: inline-block;
     padding: 5px;
-    background: gray;
     margin-left: 5px;
     border-radius: 50%;
+    transition: transform 0.3s ease-in-out 
 }
 
 span:hover {
     cursor: pointer;
+    transform: scale(1.15);
+}
+
+.fa-times {
+    color: darkred;
+}
+.fa-pencil {
+    color: darkorange;
 }
 
 button {
-    background: limegreen;
-    display: block;
+    display: inline-block;
     padding: 8px 16px;
     width: 125px;
     margin: 10px auto;
     font-size: 16px;
+    transition: all 0.3s ease-in-out;
 }
 
 button:hover {
     cursor: pointer;
+    transform: scale(1.05);
+    color: white;
 }
 
 button:focus {
     outline: none;
     border: 1px solid #000;
+}
+
+.sort-button {
+    background: skyblue;
+    margin-left: 30%;
+}
+
+.add-button {
+    background: limegreen;
+}
+
+.reverse-button {
+    background: red;
 }
 
 .showEdit {
@@ -81,4 +105,9 @@ button:focus {
 .editing {
     background: darkred;
     color: white;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: gray;
 }
