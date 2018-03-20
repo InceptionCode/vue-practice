@@ -1,0 +1,24 @@
+<template>
+  <div>
+    <ul>
+      <li v-for="contact in contactList"
+      :key="contact.id">
+        {{contact.name}}: {{contact.number}} 
+        <br>
+        <span>{{contact.email}}</span>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  props: ['contacts'],
+  computed: {
+    contactList () {
+      return this.$store.state.contacts
+    }
+  },
+}
+</script>
+
