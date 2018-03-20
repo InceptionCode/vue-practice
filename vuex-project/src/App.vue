@@ -1,17 +1,29 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <app-header></app-header>
+    <app-contacts></app-contacts>
+    <app-favorites></app-favorites>
+    <app-footer></app-footer>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AppHeader from "./components/AppHeader"
+import AppContacts from "./components/AppContacts"
+import AppFavorites from "./components/AppFavorites"
+import AppFooter from "./components/AppFooter"
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    'app-header': AppHeader,
+    'app-contacts': AppContacts,
+    'app-footer': AppFooter,
+    'app-favorites': AppFavorites
+  },
+  data () {
+    return {
+    }
   }
 }
 </script>
