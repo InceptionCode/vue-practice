@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p>Amount of favorites: {{AmountOfFavorites}}</p>
     <ul>
       <li v-for="contact in contactList"
       :key="contact.id">
@@ -16,7 +17,10 @@ export default {
   props: ['contacts'],
   computed: {
     contactList () {
-      return this.$store.state.contacts
+      return this.$store.state.contacts;
+    },
+    AmountOfFavorites () {
+      return this.$store.getters.favoritesAmount;
     }
   },
 }

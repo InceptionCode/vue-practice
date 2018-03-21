@@ -9,7 +9,7 @@ export const store = new Vuex.Store({
         {
           id: Math.random(),
           name: 'Darrell',
-          phone: '778-787-3222',
+          number: '778-787-3222',
           email: 'darrellwjr.com@gmail.com',
           favorite: 'yes'
         },
@@ -37,6 +37,14 @@ export const store = new Vuex.Store({
       ]
   },
   getters: {
-    contactLength: state => state.contacts.length 
+    contactLength: state => state.contacts.length,
+    favoritesAmount: state => {
+      let favArray = state.contacts.map(contact =>{
+        if (contact.favorite === 'yes') {
+            return contact
+        }
+      }).filter(favs => favs !== undefined).length;
+      return favArray;
+    }
   }
 })
