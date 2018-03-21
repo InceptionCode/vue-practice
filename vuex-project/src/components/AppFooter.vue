@@ -12,4 +12,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  footer {
+    background: limegreen;
+    margin-top: 20px;
+    padding: 10px 0;
+    font-weight: bold;
+  }
 </style>

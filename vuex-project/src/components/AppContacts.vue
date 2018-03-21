@@ -10,8 +10,31 @@
         <strong>{{contact.name}}</strong>: 
         {{contact.number}}
         <span>{{contact.email}}</span>
+        <i class="fa-times"
+          @click = "deleteThisContact(contact.id)">
+          x
+        </i>
       </li>
     </ul>
+    <form action="" @submit.prevent="addContact">
+      <input type="text" 
+        placeholder="Add Contact Name" 
+        required
+        v-model = "nameInput">
+      <input type="text" 
+        placeholder="Add Contact Number" 
+        required
+        v-model = "numberInput">
+      <input type="email" 
+        placeholder="Add Contact Email" 
+        required
+        v-model= "emailInput">
+      <label for="">Mark Contact as a Favorite?</label>
+      <button @click.prevent="markAsFavorite($event)">YES</button>
+      <button @click.prevent="markAsFavorite($event)">NO</button>
+      <br>
+      <button class="submitButton">Add Contact</button>
+    </form>
   </div>
 </template>
 
@@ -26,13 +49,64 @@ export default {
       return this.$store.getters.contactLength;
     }
   },
+  data() {
+    return {
+      nameInput: '',
+      numberInput: '',
+      emailInput: '',
+      isFavorite: false
+    }
+  },
+  methods: {
+    clearForm() {
+      this.nameInput = '';
+      this.numberInput= '';
+      this.emailInput = '';
+      this.isFavorite = false;
+    },
+    markAsFavorite(e) {
+      if(e.target.innerHTML === "YES") {
+        this.isFavorite = 'yes';
+      }
+    },
+    addContact() {
+      this.$store.commit({
+        type: 'createContact',
+        contact: {
+          id: Math.random(),
+          name: this.nameInput,
+          number: this.numberInput,
+          email: this.emailInput,
+          favorite: this.isFavorite
+        }
+      })
+        this.clearForm();
+    },
+    deleteThisContact (id) {
+      const {favoritesList} = this.$store.state;
+      const newContacts = this.contactList.filter(contact => {
+        return contact.id !== id;
+      });
+      const newFavList = favoritesList.filter(contact => {
+        return contact.id !== id;
+      });
+      
+      return this.commitDelete(newContacts,newFavList);
+    },
+    commitDelete (newContacts,newFavList) {
+      this.$store.commit({
+        type: "deleteContact",
+        newContacts,
+        newFavList
+      })
+    }
+  }
 }
 </script>
 
 <style scoped>
   .contact-title-wrapper {
-    border: 3px solid limegreen;
-    border-radius: 5px;
+    background: limegreen;
   }
   .contact-amount {
     background: white;

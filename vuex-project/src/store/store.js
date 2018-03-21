@@ -34,17 +34,32 @@ export const store = new Vuex.Store({
           email: 'frank@fakemail.com',
           favorite: 'no'
         }
-      ]
+      ],
+      favoritesList: []
+  },
+  mutations: {
+    createContact (state, payload) {
+      state.contacts.push(payload.contact);
+    },
+    deleteContact(state, payload) {
+      if (payload.newContacts) {
+        state.contacts = payload.newContacts;
+      }
+      state.favoritesList = payload.newFavList;
+    }
   },
   getters: {
     contactLength: state => state.contacts.length,
-    favoritesAmount: state => {
+    setFavorites: state => {
       let favArray = state.contacts.map(contact =>{
         if (contact.favorite === 'yes') {
             return contact
         }
-      }).filter(favs => favs !== undefined).length;
-      return favArray;
+      });
+      state.favoritesList = favArray.filter(favs => favs !== undefined);
+    },
+    favoritesAmount: state=> {
+      return state.favoritesList.length;
     }
   }
 })
