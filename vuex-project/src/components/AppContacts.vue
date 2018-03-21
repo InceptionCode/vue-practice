@@ -29,6 +29,7 @@
         placeholder="Add Contact Email" 
         required
         v-model= "emailInput">
+      <br>
       <label for="">Mark Contact as a Favorite?</label>
       <button @click.prevent="markAsFavorite($event)">YES</button>
       <button @click.prevent="markAsFavorite($event)">NO</button>
@@ -140,5 +141,35 @@ export default {
   }
   strong {
     color: limegreen;
+  }
+  input {
+    margin: 10px;
+    padding: 5px 10px;
+    outline: none;
+    border: none;
+    border-bottom: 4px solid navy;
+    font-size: 16px;
+  }
+  label {
+    display: block;
+    color: limegreen;
+    margin-top: 25px;
+    letter-spacing: 2px;
+    font-size: 18px;
+  }
+
+  button {
+    background: navy;
+    color: white;
+    margin: 10px 5px;
+    padding: 5px 10px;
+    font-size: 16px;
+    outline: none;
+    border: none;
+  }
+  button:hover {
+    cursor: pointer;
+    background: limegreen;
+    transform: scale(1.08);
   }
 </style>
