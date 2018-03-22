@@ -2,7 +2,7 @@
 <div>
   <div class="favorites-title-wrapper">
     <h2>Favorites</h2>
-    <h3 class="contact-amount">Amount of favorites: {{AmountOfFavorites}}</h3>
+    <h3 class="contact-amount">Amount of favorites: {{amountOfFavorites}}</h3>
   </div>
   <ul>
     <li v-for="contact in contactList"
@@ -10,6 +10,8 @@
       <strong>{{contact.name}}</strong>: 
       {{contact.number}}
       <span>{{contact.email}}</span>
+      <span class="edit-button"
+          @click= "commitEdit(contact.id)">edit</span>
       <i class="fa-times"
         @click = "deleteThisContact(contact.id)">
         x
@@ -20,6 +22,8 @@
 </template>
 
 <script>
+import methods from '../mixins/methods'
+
 export default {
   props: ['contacts'],
   computed: {
@@ -27,29 +31,37 @@ export default {
       this.$store.getters.setFavorites
       return this.$store.state.favoritesList;
     },
-    AmountOfFavorites () {
+    amountOfFavorites () {
       return this.$store.getters.favoritesAmount;
     }
   },
+  mixins: [methods],
   methods: {
-    deleteThisContact (id) {
-      const {contacts} = this.$store.state;
-      const newFavList = this.contactList.filter(contact => {
-        return contact.id !== id;
-      });
-      const newContacts = contacts.filter(contact => {
-        return contact.id !== id;
-      });
-      
-      return this.commitDelete(newContacts,newFavList);
-    },
     commitDelete (newContacts,newFavList) {
-      this.$store.commit({
+      const {commit} = this.$store;
+      commit({
         type: "deleteContact",
         newContacts,
         newFavList
       })
-    }
+    },
+    commitEdit (editID) {
+      const {commit} = this.$store;
+      const {contacts,favoritesList} = this.$store.state;
+
+      let favoritesContacts = 
+              favoritesList.filter(contact => contact.id !== editID);
+
+      let newContacts = contacts.filter(contact => contact.id !== editID);
+
+      this.populateForm(editID);
+      commit({
+        type: 'editContact',
+        favoritesContacts,
+        editID: '',
+        contacts: newContacts,
+      })
+   }
   }
 }
 </script>

@@ -10,6 +10,8 @@
         <strong>{{contact.name}}</strong>: 
         {{contact.number}}
         <span>{{contact.email}}</span>
+      <span class="edit-button"
+          @click= "commitEdit(contact.id)">edit</span>
         <i class="fa-times"
           @click = "deleteThisContact(contact.id)">
           x
@@ -40,6 +42,8 @@
 </template>
 
 <script>
+import methods from '../mixins/methods'
+
 export default {
   props: ['contacts'],
   computed: {
@@ -48,7 +52,11 @@ export default {
     },
     contactsAmount () {
       return this.$store.getters.contactLength;
-    }
+    },
+   /*  editingContact () {
+      console.log('ran')
+      return this.$store.getters.sendEditingContact;
+    } */
   },
   data() {
     return {
@@ -58,7 +66,19 @@ export default {
       isFavorite: false
     }
   },
+  mixins: [methods],
   methods: {
+    populateForm(editID) {
+      let editContact = this.contactList.filter(contact => contact.id === editID);
+
+      const [fields] = editContact;
+      const {name, number, email, isFavorite} = fields;
+
+      this.nameInput = name;
+      this.numberInput = number;
+      this.emailInput = email;
+      this.isFavorite = isFavorite;
+    },
     clearForm() {
       this.nameInput = '';
       this.numberInput= '';
@@ -71,37 +91,61 @@ export default {
       }
     },
     addContact() {
-      this.$store.commit({
-        type: 'createContact',
-        contact: {
-          id: Math.random(),
-          name: this.nameInput,
-          number: this.numberInput,
-          email: this.emailInput,
-          favorite: this.isFavorite
-        }
-      })
+      const {commit, editID} = this.$store;
+      let contact = {
+            id: Math.random(),
+            name: this.nameInput,
+            number: this.numberInput,
+            email: this.emailInput,
+            favorite: this.isFavorite
+          };
+      if (editID === '') {
+        commit({
+          type: 'createContact',
+          contact,
+        })
+      } else {
+        const {name, number, email, favorite} = contact;
+        const editedContactData = {
+          id: editID,
+          name,
+          number,
+          email,
+          favorite
+        };
+        commit({
+          type: 'createContact',
+          contact: editedContactData,
+        })
+      }
         this.clearForm();
     },
-    deleteThisContact (id) {
-      const {favoritesList} = this.$store.state;
-      const newContacts = this.contactList.filter(contact => {
-        return contact.id !== id;
-      });
-      const newFavList = favoritesList.filter(contact => {
-        return contact.id !== id;
-      });
-      
-      return this.commitDelete(newContacts,newFavList);
-    },
     commitDelete (newContacts,newFavList) {
-      this.$store.commit({
+      const {commit} = this.$store;
+      commit({
         type: "deleteContact",
         newContacts,
         newFavList
       })
-    }
+    },
+    commitEdit (editID) {
+      const {commit} = this.$store;
+      const {contacts,favoritesList} = this.$store.state;
+
+      let favoritesContacts = 
+              favoritesList.filter(contact => contact.id !== editID);
+
+      let newContacts = contacts.filter(contact => contact.id !== editID);
+
+      this.populateForm(editID);
+      commit({
+        type: 'editContact',
+        favoritesContacts,
+        editID: '',
+        contacts: newContacts,
+      })
   }
+ }
 }
 </script>
 

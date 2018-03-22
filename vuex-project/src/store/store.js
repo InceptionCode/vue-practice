@@ -35,18 +35,8 @@ export const store = new Vuex.Store({
           favorite: 'no'
         }
       ],
-      favoritesList: []
-  },
-  mutations: {
-    createContact (state, payload) {
-      state.contacts.push(payload.contact);
-    },
-    deleteContact(state, payload) {
-      if (payload.newContacts) {
-        state.contacts = payload.newContacts;
-      }
-      state.favoritesList = payload.newFavList;
-    }
+      favoritesList: [],
+      editID: ''
   },
   getters: {
     contactLength: state => state.contacts.length,
@@ -58,8 +48,24 @@ export const store = new Vuex.Store({
       });
       state.favoritesList = favArray.filter(favs => favs !== undefined);
     },
-    favoritesAmount: state=> {
+    favoritesAmount: state => {
       return state.favoritesList.length;
+    }
+  },
+  mutations: {
+    createContact (state, payload) {
+        state.editID = '';
+        state.contacts.push(payload.contact);
+    },
+    deleteContact(state, payload) {
+      if (payload.newContacts) {
+        state.contacts = payload.newContacts;
+      }
+      state.favoritesList = payload.newFavList;
+    },
+    editContact(state, payload) {
+      state.contacts = payload.contacts;
+      state.favoritesList = payload.favoritesContacts;
     }
   }
 })

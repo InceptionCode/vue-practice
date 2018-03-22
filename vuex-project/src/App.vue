@@ -83,4 +83,12 @@ export default {
 .fa-times:hover {
   cursor: pointer;
 }
+
+.edit-button {
+  color: darkorange;
+  margin-left: 10px;
+}
+.edit-button:hover {
+  cursor:pointer;
+}
 </style>
