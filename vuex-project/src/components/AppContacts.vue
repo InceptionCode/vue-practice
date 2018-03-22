@@ -22,15 +22,19 @@
       <input type="text" 
         placeholder="Add Contact Name" 
         required
-        v-model = "nameInput">
+        :value = "nameInput" 
+        ref = "nameField">
+       
       <input type="text" 
         placeholder="Add Contact Number" 
         required
-        v-model = "numberInput">
+        :value = "numberInput"
+        ref = "numberField">
       <input type="email" 
         placeholder="Add Contact Email" 
         required
-        v-model= "emailInput">
+        :value= "emailInput"
+        ref = "emailField">
       <br>
       <label for="">Mark Contact as a Favorite?</label>
       <button @click.prevent="markAsFavorite($event)">YES</button>
@@ -43,6 +47,7 @@
 
 <script>
 import methods from '../mixins/methods'
+import inputFields from '../mixins/inputFields'
 
 export default {
   props: ['contacts'],
@@ -53,51 +58,50 @@ export default {
     contactsAmount () {
       return this.$store.getters.contactLength;
     },
-   /*  editingContact () {
-      console.log('ran')
-      return this.$store.getters.sendEditingContact;
-    } */
   },
-  data() {
+  mixins: [inputFields, methods],
+  data () {
     return {
-      nameInput: '',
-      numberInput: '',
-      emailInput: '',
-      isFavorite: false
+      favoriteState: false
     }
   },
-  mixins: [methods],
   methods: {
-    populateForm(editID) {
-      let editContact = this.contactList.filter(contact => contact.id === editID);
-
-      const [fields] = editContact;
-      const {name, number, email, isFavorite} = fields;
-
-      this.nameInput = name;
-      this.numberInput = number;
-      this.emailInput = email;
-      this.isFavorite = isFavorite;
-    },
     clearForm() {
-      this.nameInput = '';
-      this.numberInput= '';
-      this.emailInput = '';
-      this.isFavorite = false;
+      const {commit} = this.$store;
+      commit({
+        type: 'changeFormState',
+        full: true,
+        fields: 'empty'
+      });
     },
     markAsFavorite(e) {
+      const {commit} = this.$store;
       if(e.target.innerHTML === "YES") {
-        this.isFavorite = 'yes';
+        commit({
+          type: 'changeFormState',
+          full: false,
+          fields: 'fav-yes'
+        });
+      } else {
+          commit({
+            type: 'changeFormState',
+            full: false,
+            fields: 'fav-no'
+          });
       }
     },
     addContact() {
-      const {commit, editID} = this.$store;
+      const {commit } = this.$store;
+      const {nameField, numberField, emailField} = this.$refs;
+      const {isFavorite, editID} = this.$store.state;
+
+      const favorite = (isFavorite ? 'yes' : 'no');
       let contact = {
             id: Math.random(),
-            name: this.nameInput,
-            number: this.numberInput,
-            email: this.emailInput,
-            favorite: this.isFavorite
+            name: nameField.value,
+            number: numberField.value,
+            email: emailField.value,
+            favorite 
           };
       if (editID === '') {
         commit({
@@ -105,7 +109,8 @@ export default {
           contact,
         })
       } else {
-        const {name, number, email, favorite} = contact;
+        console.log(isFavorite)
+        const {name, number, email} = contact;
         const editedContactData = {
           id: editID,
           name,
@@ -141,7 +146,6 @@ export default {
       commit({
         type: 'editContact',
         favoritesContacts,
-        editID: '',
         contacts: newContacts,
       })
   }

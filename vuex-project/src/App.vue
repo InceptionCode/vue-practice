@@ -34,14 +34,15 @@ export default {
     'app-footer': AppFooter,
     'app-favorites': AppFavorites
   },
-  data () {
-    return {
-      showList: false
+  computed: {
+    showList () {
+      return this.$store.state.showList
     }
   },
   methods: {
     showContacts () {
-      return this.showList = !this.showList
+      const {commit} = this.$store;
+      commit('showFullList');
     }
   }
 }

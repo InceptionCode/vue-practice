@@ -36,7 +36,12 @@ export const store = new Vuex.Store({
         }
       ],
       favoritesList: [],
-      editID: ''
+      editID: '',
+      showList: false,
+      nameInput: '',
+      numberInput: '',
+      emailInput: '',
+      isFavorite: false
   },
   getters: {
     contactLength: state => state.contacts.length,
@@ -53,9 +58,38 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
+    showFullList (state) {
+      state.showList = !state.showList
+    },
+    changeFormState (state, payload) {
+      const {full, fields} = payload;
+      if (full && fields === "empty") {
+        state.nameInput = '';
+        state.numberInput = '';
+        state.emailInput = '';
+        state.isFavorite = false;
+      }else if (!full && fields === "fav-yes") {
+        state.isFavorite = true;
+      } else if (!full && fields === "fav-no") {
+        state.isFavorite = false;
+      } else {
+        const {name, number, email, favorite} = payload.setFields;
+        const isFavorite = (favorite === "yes" ? true : false);
+
+        state.nameInput = name;
+        state.numberInput = number;
+        state.emailInput = email;
+        state.isFavorite = isFavorite;
+      }
+    },
     createContact (state, payload) {
+      const {name, number, email, favorite} = payload.contact;
         state.editID = '';
         state.contacts.push(payload.contact);
+        state.nameInput = name;
+        state.numberInput = number;
+        state.emailInput = email;
+        state.isFavorite = favorite;
     },
     deleteContact(state, payload) {
       if (payload.newContacts) {
@@ -66,6 +100,7 @@ export const store = new Vuex.Store({
     editContact(state, payload) {
       state.contacts = payload.contacts;
       state.favoritesList = payload.favoritesContacts;
+      state.showList = true;
     }
   }
 })

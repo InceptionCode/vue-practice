@@ -11,5 +11,18 @@ export default {
       
       return this.commitDelete(newContacts,newFavList);
     },
+    populateForm(editID) {
+      const {contacts} = this.$store.state;
+      let editContact = contacts.filter(contact => contact.id === editID);
+
+      const [fields] = editContact;
+      const {commit} = this.$store;
+      commit({
+        type: 'changeFormState',
+        full: true,
+        fields: 'populated',
+        setFields: fields
+      });
+    },
   }
 }
