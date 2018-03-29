@@ -1,8 +1,8 @@
 <template>
   <section class="container">
     <div>
-      <nuxt-link to="/app">App page</nuxt-link>
       <logo/>
+      <Nav :routes="routes"/>
       <h1 class="title">
         blog-vue
       </h1>
@@ -18,12 +18,16 @@
 </template>
 
 <script>
+import Routes from '~/assets/mixins/routes'
 import Logo from '~/components/Logo.vue'
+import Nav from '~/components/Nav.vue'
 
 export default {
   components: {
-    Logo
-  }
+    Logo,
+    Nav
+  },
+  mixins: [Routes],
 }
 </script>
 
