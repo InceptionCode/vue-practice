@@ -2,7 +2,6 @@
   <section class="container">
     <div>
       <logo/>
-      <Nav :routes="routes"/>
       <h1 class="title">
         blog-vue
       </h1>
@@ -18,16 +17,13 @@
 </template>
 
 <script>
-import Routes from '~/assets/mixins/routes'
 import Logo from '~/components/Logo.vue'
-import Nav from '~/components/Nav.vue'
 
 export default {
   components: {
-    Logo,
-    Nav
+    Logo
   },
-  mixins: [Routes],
+  layout: 'nav'
 }
 </script>
 

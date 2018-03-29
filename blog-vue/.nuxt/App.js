@@ -6,7 +6,9 @@ import '../assets/css/main.sass'
 
 let layouts = {
 
-  "_default": () => import('../layouts/default.vue'  /* webpackChunkName: "layouts/default" */).then(m => m.default || m)
+  "_default": () => import('../layouts/default.vue'  /* webpackChunkName: "layouts/default" */).then(m => m.default || m),
+
+  "_nav": () => import('../layouts/nav.vue'  /* webpackChunkName: "layouts/nav" */).then(m => m.default || m)
 
 }
 
