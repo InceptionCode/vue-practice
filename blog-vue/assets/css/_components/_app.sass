@@ -1,2 +1,71 @@
-#blog-home
-  background: $theme-gray
+.app-header
+  position: relative
+  background: $theme-white
+  color: $theme-black
+  padding: 20px 50px
+  height: 400px
+
+.header-h1
+  margin-top: 100px
+  font:
+    family: Montserrat
+    size: 3.5em
+  text-align: center
+  letter-spacing: 4.5px
+  text-transform: uppercase
+
+.app-nav 
+  position: absolute
+  bottom: 0
+  left: 0
+  width: 100%
+  .nav-tabs
+    padding: 0 15px
+    list-style: none
+    transition: all 0.3s ease-in-out
+    &:hover
+      background: $theme-white
+      border: 3px solid $theme-black
+      transform: scale(1.05)
+      a 
+        color: $theme-black
+        font-weight: bold
+    a
+      color: $theme-white
+      font-size: 16px
+      text-transform: uppercase
+      text-decoration: none
+      letter-spacing: 2px
+
+.feature-header 
+  font: 
+    weight: bold 
+    size: 3em
+  text-align: center
+  text-transform: uppercase
+  letter-spacing: 4.5px
+.card-wrapper
+  display: flex
+  justify-content: space-around
+  border-top: 3px solid $theme-black
+  border-bottom: 3px solid $theme-black
+
+.card
+  background: $theme-white
+  margin: 0 10px
+  a:hover 
+    .card-img-container img
+      filter: grayscale(65%)
+    .card-preview
+      background: $theme-white
+      color: $theme-black
+  .card-img-container
+    img
+      transition: all 0.5s ease-in-out
+      width: 100%
+      height: auto
+  .card-preview
+    transition: all 0.5s ease-in-out
+    background: $theme-black
+    color: $theme-white
+    padding: 0 5px
