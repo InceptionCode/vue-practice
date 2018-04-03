@@ -5,7 +5,7 @@
       <div class="card">
         <nuxt-link to="#">
           <div class="card-img-container">
-            <img src="../assets/media/code.jpeg" alt="">
+            <img src="../../assets/media/code.jpeg" alt="">
           </div>
           <div class="card-preview">
             Feature preview text here
@@ -15,7 +15,7 @@
       <div class="card">
         <nuxt-link to="#">
           <div class="card-img-container">
-            <img src="../assets/media/code.jpeg" alt="">
+            <img src="../../assets/media/code.jpeg" alt="">
           </div>
           <div class="card-preview">
             Feature preview text here
@@ -25,7 +25,7 @@
       <div class="card">
         <nuxt-link to="#">
           <div class="card-img-container">
-            <img src="../assets/media/code.jpeg" alt="">
+            <img src="../../assets/media/code.jpeg" alt="">
           </div>
           <div class="card-preview">
             Feature preview text here
@@ -35,7 +35,7 @@
       <div class="card">
         <nuxt-link to="#">
           <div class="card-img-container">
-            <img src="../assets/media/code.jpeg" alt="">
+            <img src="../../assets/media/code.jpeg" alt="">
           </div>
           <div class="card-preview">
             Feature preview text here

@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import AppNav from "../../components/AppNav"
-import AppFeatureSection from "../../components/AppFeatureSection"
+import AppNav from "../../components/home/AppNav"
+import AppFeatureSection from "../../components/home/AppFeatureSection"
 
 export default {
   layout: "nav",
