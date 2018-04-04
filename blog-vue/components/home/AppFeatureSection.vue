@@ -1,6 +1,6 @@
 <template>
   <section class="feature-section">
-    <h1 class="feature-header">Features</h1>
+    <h1 class="section-title">Features</h1>
     <div class="card-wrapper">
       <div class="card">
         <nuxt-link to="#">

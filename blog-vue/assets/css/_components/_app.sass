@@ -43,41 +43,16 @@
 .app-side-nav
   @extend .app-nav
 
-.feature-header 
+.section-title
   font: 
     weight: bold 
     size: 3em
   text-align: center
   text-transform: uppercase
   letter-spacing: 4.5px
-.card-wrapper
-  display: flex
-  justify-content: space-around
-  border-top: 3px solid $theme-black
-  border-bottom: 3px solid $theme-black
 
-.card
-  background: $theme-white
-  margin: 0 10px
-  a:hover 
-    .card-img-container img
-      filter: grayscale(65%)
-      transform: scale(1.05)
-    .card-preview
-      background: $theme-white
-      color: $theme-black
-      transform: scale(1.05)
-  .card-img-container
-    img
-      transition: all 0.5s ease-in-out
-      width: 100%
-      height: auto
-  .card-preview
-    transition: all 0.5s ease-in-out
-    background: $theme-black
-    color: $theme-white
-    padding: 0 5px
-
+.left-img
+  float: left
 // Media
 
 @media(max-width: 760px) 

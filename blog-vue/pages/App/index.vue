@@ -9,8 +9,9 @@
 </template>
 
 <script>
-import AppNav from "../../components/global/AppNav"
-import AppFeatureSection from "../../components/home/AppFeatureSection"
+import navData from '@/assets/mixins/app-nav'
+import AppNav from "@/components/global/AppNav"
+import AppFeatureSection from "@/components/home/AppFeatureSection"
 
 export default {
   layout: "nav",
@@ -18,22 +19,7 @@ export default {
     "app-nav": AppNav,
     "app-feature-section": AppFeatureSection
   },
-  data() {
-    return {
-      tabs: [
-        {
-          id: 1,
-          name: "About",
-          ref: "/App/about"
-        },
-        {
-          id: 2,
-          name: "posts",
-          ref: "/App/posts"
-        }
-      ]
-    }
-  }
+  mixins: [navData]
 }
 </script>
 

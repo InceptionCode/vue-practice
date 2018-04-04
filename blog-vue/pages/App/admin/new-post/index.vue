@@ -1,10 +1,10 @@
 <template>
   <div>
     <header class="app-header">
-      <h1 class="header-h1">Admin</h1>
+      <h1 class="header-h1">Admin: New Post</h1>
       <app-nav :tabs="tabs"/>
     </header>
-    <section class="add-post">
+    <section class="new-post">
       <button>Create Post</button>
     </section>
     <section class="existing-post">
