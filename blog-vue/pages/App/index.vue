@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import AppNav from "../../components/home/AppNav"
+import AppNav from "../../components/global/AppNav"
 import AppFeatureSection from "../../components/home/AppFeatureSection"
 
 export default {

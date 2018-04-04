@@ -19,11 +19,13 @@
   bottom: 0
   left: 0
   width: 100%
-  .nav-tabs
+  .navTabs,
+  .sideTabs
     padding: 0 15px
     list-style: none
     transition: all 0.3s ease-in-out
     &:hover
+      cursor: pointer
       background: $theme-white
       border: 3px solid $theme-black
       transform: scale(1.05)
@@ -31,11 +33,15 @@
         color: $theme-black
         font-weight: bold
     a
+      width: 75px
       color: $theme-white
       font-size: 16px
       text-transform: uppercase
       text-decoration: none
       letter-spacing: 2px
+
+.app-side-nav
+  @extend .app-nav
 
 .feature-header 
   font: 
@@ -71,3 +77,25 @@
     background: $theme-black
     color: $theme-white
     padding: 0 5px
+
+// Media
+
+@media(max-width: 760px) 
+  .app-nav
+    flex-direction: column
+    .navTabs
+      display: none
+    .sideTabs
+      width: 75px
+    .--hamburger
+      display: block
+    .show 
+      display: initial 
+
+  .app-side-nav li:first-of-type
+    margin-top: 10px
+
+  .card-wrapper
+    flex-direction: column
+    .card
+      margin: 20px 10px
