@@ -7,15 +7,19 @@
     <section class="new-post">
       <form @submit.prevent="savePost">
         <app-control-input v-model="editPost.author"
+          type="text"
           label="Author Name"
         />
         <app-control-input v-model="editPost.title"
+          type="text"
           label="Title"
         />
         <app-control-input v-model="editPost.thumbnailLink"
+          type="text"
           label="Thumbnail Link"
         />
         <app-control-input v-model="editPost.content"
+          type="textarea"
           label="Content"
           controlType="textarea"
         />
