@@ -5,7 +5,7 @@
       <app-nav :tabs="tabs"/>
     </header>
     <section class="add-post">
-      <button>Create Post</button>
+      <button @click="$router.push('admin/new-post')">Create Post</button>
     </section>
     <section class="existing-post">
       <h1 class ="section-title">Existing Post</h1>
