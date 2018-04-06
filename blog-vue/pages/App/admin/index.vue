@@ -9,13 +9,14 @@
     </section>
     <section class="existing-post">
       <h1 class ="section-title">Existing Post</h1>
-      <app-posts-section />
+      <app-posts-section :postPreview="postPreview"/>
     </section>
   </div>
 </template>
 
 <script>
 import navData from '@/assets/mixins/app-nav'
+import postPreviewData from '@/assets/mixins/post-preview'
 import AppNav from '@/components/global/AppNav'
 import AppPostsSection from '@/components/posts/AppPostsSection'
 
@@ -25,7 +26,7 @@ export default {
    'app-nav': AppNav,
    'app-posts-section': AppPostsSection
  },
- mixins: [navData] 
+ mixins: [navData, postPreviewData] 
 }
 </script>
 
