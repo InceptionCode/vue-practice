@@ -19,7 +19,7 @@ export default {
         author: 'Darrell Washington',
         title: 'Best Post Ever',
         content: 'Here is the greatest post you will ever see.',
-        thumbnailLink: '@/assets/media/code.jpeg'
+        thumbnailLink: 'https://goo.gl/SQNvnV'
       }
     }
   }

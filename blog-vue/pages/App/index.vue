@@ -4,7 +4,7 @@
       <h1 class="header-h1">Blog Vue</h1>
       <app-nav :tabs="tabs"/>
     </header>
-    <app-feature-section :featurePreview="featurePreview"/>
+    <app-feature-section :featurePreview="featurePreview" />
   </div>
 </template>
 
@@ -16,6 +16,12 @@ import AppFeatureSection from "@/components/home/AppFeatureSection"
 
 export default {
   layout: "nav",
+  props: { 
+      isAdmin: {
+        type: Boolean,
+        default: false
+      } 
+  },
   components: {
     "app-nav": AppNav,
     "app-feature-section": AppFeatureSection

@@ -6,7 +6,7 @@
         v-for="post in featurePreview"
         :key="post.id"
       >
-        <nuxt-link :to="'post/' + post.id">
+        <nuxt-link :to="linkTo(post.id)">
           <div class="card-img-container">
             <img :src="post.postThumbnail" alt="">
           </div>
@@ -22,7 +22,20 @@
 
 <script>
 export default {
-  props: ['featurePreview']
+  props: {
+    featurePreview: {
+      type: Array,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    } 
+  },
+  methods: {
+    linkTo (id) {
+      return this.isAdmin ? 'admin/' + id : 'post/' + id
+    }
+  }
 }
 </script>
 

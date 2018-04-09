@@ -9,7 +9,9 @@
     </section>
     <section class="existing-post">
       <h1 class ="section-title">Existing Post</h1>
-      <app-posts-section :postPreview="postPreview"/>
+      <app-posts-section :postPreview="postPreview"
+        :is-admin="true" 
+      />
     </section>
   </div>
 </template>

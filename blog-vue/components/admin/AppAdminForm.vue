@@ -35,7 +35,7 @@ import AppButton from '@/components/AppButton'
 
 export default {
  layout: "nav",
- props: ['loadedPost'],
+ props: ['post'],
  components: {
    'app-control-input': AppControlInput,
    'app-button': AppButton

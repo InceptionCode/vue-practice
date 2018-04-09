@@ -4,9 +4,11 @@
       <h1 class="header-h1">Posts</h1>
       <app-nav :tabs="tabs"/>
     </header>
-    <app-feature-section :featurePreview="featurePreview"/>
+    <app-feature-section :featurePreview="featurePreview" 
+     />
     <h1 class="section-title">All posts</h1>
-    <app-posts-section :postPreview="postPreview"/>
+    <app-posts-section :postPreview="postPreview" 
+    />
   </div>
 </template>
 
@@ -27,7 +29,7 @@ export default {
         default: false
       } 
   },
-  components: {
+components: {
     "app-nav": AppNav,
     "app-feature-section": AppFeatureSection,
     "app-posts-section": AppPostsSection

@@ -15,7 +15,15 @@
         <p class="preview">{{post.postContent}}</p>
       </div>
       <nuxt-link class="read-more"
-        :to="'post/' + post.id"
+        :to="linkTo(post.id)"
+        v-if="isAdmin"
+      >
+        Edit...
+      </nuxt-link>
+
+      <nuxt-link class="read-more"
+        :to="linkTo(post.id)"
+        v-else
       >
         Read More...
       </nuxt-link>
@@ -25,7 +33,20 @@
 
 <script>
 export default {
-  props:['postPreview']
+  props: {
+    postPreview: {
+      type: Array,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    } 
+  },
+  methods: {
+    linkTo (id) {
+      return this.isAdmin ? 'admin/' + id : 'post/' + id
+    }
+  }
 }
 </script>
 
