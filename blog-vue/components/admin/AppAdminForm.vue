@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import AppControlInput from '@/components/AppControlInput'
-import AppButton from '@/components/AppButton'
+import AppControlInput from '@/components/ui/AppControlInput'
+import AppButton from '@/components/ui/AppButton'
 
 export default {
  layout: "nav",
