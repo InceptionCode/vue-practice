@@ -25,6 +25,7 @@ export default {
   props: {
     featurePreview: {
       type: Array,
+      required: true
     },
     isAdmin: {
       type: Boolean,
@@ -33,7 +34,7 @@ export default {
   },
   methods: {
     linkTo (id) {
-      return this.isAdmin ? 'admin/' + id : 'post/' + id
+      return this.isAdmin ? 'App/admin/' + id : 'App/posts/' + id
     }
   }
 }

@@ -8,6 +8,7 @@ const _314d36d4 = () => import('../pages/App/about/index.vue' /* webpackChunkNam
 const _17420c50 = () => import('../pages/App/admin/index.vue' /* webpackChunkName: "pages/App/admin/index" */).then(m => m.default || m)
 const _7e24c548 = () => import('../pages/App/posts/index.vue' /* webpackChunkName: "pages/App/posts/index" */).then(m => m.default || m)
 const _547d284c = () => import('../pages/App/admin/new-post/index.vue' /* webpackChunkName: "pages/App/admin/new-post/index" */).then(m => m.default || m)
+const _35651fd6 = () => import('../pages/App/admin/auth/index.vue' /* webpackChunkName: "pages/App/admin/auth/index" */).then(m => m.default || m)
 const _ba7eab72 = () => import('../pages/App/posts/_id/index.vue' /* webpackChunkName: "pages/App/posts/_id/index" */).then(m => m.default || m)
 const _55777703 = () => import('../pages/App/admin/_postId/index.vue' /* webpackChunkName: "pages/App/admin/_postId/index" */).then(m => m.default || m)
 const _1b6387a6 = () => import('../pages/index.vue' /* webpackChunkName: "pages/index" */).then(m => m.default || m)
@@ -94,6 +95,11 @@ export function createRouter () {
 			path: "/App/admin/new-post",
 			component: _547d284c,
 			name: "App-admin-new-post"
+		},
+		{
+			path: "/App/admin/auth",
+			component: _35651fd6,
+			name: "App-admin-auth"
 		},
 		{
 			path: "/App/posts/:id",

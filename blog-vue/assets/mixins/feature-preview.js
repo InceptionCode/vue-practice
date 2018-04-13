@@ -3,25 +3,25 @@ export default {
     return {
       featurePreview: [
         {
-          id: Math.abs(Math.random() * (5 - 1)).toFixed(3),
+          id: 1,
           postThumbnail: 'https://goo.gl/SQNvnV',
           postTitle: 'Happy Coding',
           postContent: 'Here is the content'
         },
         {
-          id: Math.abs(Math.random() * (5 - 1)).toFixed(3),
+          id: 2,
           postThumbnail: 'https://goo.gl/SQNvnV',
           postTitle: 'Happy Coding',
           postContent: 'Here is the content'
         },
         {
-          id: Math.abs(Math.random() * (5 - 1)).toFixed(3),
+          id: 3,
           postThumbnail: 'https://goo.gl/SQNvnV',
           postTitle: 'Happy Coding',
           postContent: 'Here is the content'
         },
         {
-          id: Math.abs(Math.random() * (5 - 1)).toFixed(3),
+          id: 4,
           postThumbnail: 'https://goo.gl/SQNvnV',
           postTitle: 'Happy Coding',
           postContent: 'Here is the content'
@@ -30,3 +30,6 @@ export default {
     }
   }
 }
+
+// This is the algorithm used to produce random IDs
+//  2
