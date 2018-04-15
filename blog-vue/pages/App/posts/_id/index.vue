@@ -50,7 +50,6 @@ export default {
       .catch(e => {
         error(new Error())
       })
-
   },
   layout: "nav",
   components: {

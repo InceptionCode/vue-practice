@@ -9,7 +9,7 @@
     </section>
     <section class="existing-post">
       <h1 class ="section-title">Existing Post</h1>
-      <app-posts-section :postPreview="postPreview"
+      <app-posts-section :postPreview="loadedPosts"
         :is-admin="true" 
       />
     </section>
@@ -18,7 +18,6 @@
 
 <script>
 import navData from '@/assets/mixins/app-nav'
-import postPreviewData from '@/assets/mixins/post-preview'
 import AppNav from '@/components/global/AppNav'
 import AppAdminForm from '@/components/admin/AppAdminForm'
 import AppPostsSection from '@/components/posts/AppPostsSection'
@@ -30,7 +29,7 @@ export default {
    'app-posts-section': AppPostsSection,
    'app-admin-form': AppAdminForm
  },
- mixins: [navData, postPreviewData],
+ mixins: [navData],
  data() {
     return {
       editPost: {
@@ -39,6 +38,11 @@ export default {
         thumbnailLink: '',
         content: ''
       }
+    }
+  },
+  computed: {
+    loadedPosts () {
+      return this.$store.getters.loadedPosts;
     }
   },
   methods: {

@@ -6,13 +6,13 @@
     >
       <div class="card-img-container">
         <img class="left-img posts-img" 
-          :src="post.postThumbnail" 
+          :src="post.thumbnail" 
           alt=""
         >
       </div>
       <div class="card-preview">
-        <h1 class="preview-title">{{post.postTitle}}</h1>
-        <p class="preview">{{post.postContent}}</p>
+        <h1 class="preview-title">{{post.title}}</h1>
+        <p class="preview">{{post.subContent}}</p>
       </div>
       <nuxt-link class="read-more"
         :to="linkTo(post.id)"

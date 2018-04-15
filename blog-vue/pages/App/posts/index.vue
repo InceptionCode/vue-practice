@@ -5,7 +5,7 @@
       <app-nav :tabs="tabs"/>
     </header>
     <h1 class="section-title">All posts</h1>
-    <app-posts-section :postPreview="postPreview" 
+    <app-posts-section :postPreview="loadedPosts" 
     />
   </div>
 </template>
@@ -13,7 +13,6 @@
 <script>
 import navData from '@/assets/mixins/app-nav'
 import featurePreviewData from '@/assets/mixins/feature-preview'
-import postPreviewData from '@/assets/mixins/post-preview'
 import AppNav from '@/components/global/AppNav'
 import AppPostsSection from '@/components/posts/AppPostsSection'
 
@@ -26,11 +25,16 @@ export default {
         default: false
       } 
   },
-components: {
+  components: {
     "app-nav": AppNav,
     "app-posts-section": AppPostsSection
   },
-  mixins: [navData,featurePreviewData,postPreviewData],
+  mixins: [navData,featurePreviewData],
+  computed: {
+    loadedPosts () {
+     return this.$store.getters.loadedPosts;
+    }
+  },
 }
 </script>
 
