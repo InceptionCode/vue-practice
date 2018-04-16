@@ -8,5 +8,8 @@
     "start": "lite-server -c bs-config.js"
   },
   "author": "Darrell Washington Jr.",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.22.1"
+  }
 }

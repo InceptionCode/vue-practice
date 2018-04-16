@@ -28,28 +28,19 @@
 import navData from '@/assets/mixins/app-nav'
 import AppNav from '@/components/global/AppNav'
 
+import axios from 'axios'
+
 export default {
   asyncData({params, error}) {
-    return new Promise ((resolve,reject)=> {
-      setTimeout(()=> {
-        resolve({
-          loadedPost: {
-            id: params.id,
-            updatedDate: "April 13th, 2018",
-            thumbnail: 'https://goo.gl/SQNvnV',
-            title: 'Happy Coding',
-            author: "Darrell Washington",
-            content: 'Here is the content'
+    return (
+      axios.get('https://blog-vue-97.firebaseio.com/posts'+ `/${params.id}.json`)
+        .then(payload => {
+          return {
+            loadedPost: payload.data
           }
         })
-      }, 500)
-    })
-      .then(data => {
-        return data;
-      })
-      .catch(e => {
-        error(new Error())
-      })
+        .catch(e => error(e))
+    );
   },
   layout: "nav",
   components: {

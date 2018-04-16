@@ -1,4 +1,5 @@
 import Vuex from 'vuex'
+import axios from 'axios'
 
 const Store = () => {
   return new Vuex.Store({
@@ -6,56 +7,35 @@ const Store = () => {
     mutations: {
       setPosts(state, posts) {
         state.loadedPosts = posts
+      },
+      updatePosts(state, post) {
+        state.loadedPosts.push(post);
       }
     },
     actions: {
       nuxtServerInit({commit},{params, error}) {
-        return new Promise ((resolve,reject)=> {
-          setTimeout(()=> {
-            commit('setPosts',[
-              {
-                id: 1,
-                updatedDate: "April 13th, 2018",
-                thumbnail: 'https://goo.gl/SQNvnV',
-                title: 'Happy Coding',
-                author: "Darrell Washington",
-                content: 'Here is the content',
-                subContent: 'Here is the sub preview content'
-              },
-              {
-                id: 2,
-                updatedDate: "April 13th, 2018",
-                thumbnail: 'https://goo.gl/SQNvnV',
-                title: 'Happy Coding',
-                author: "Darrell Washington",
-                content: 'Here is the content',
-                subContent: 'Here is the sub preview content'
-              },
-              {
-                id: 3,
-                updatedDate: "April 13th, 2018",
-                thumbnail: 'https://goo.gl/SQNvnV',
-                title: 'Happy Coding',
-                author: "Darrell Washington",
-                content: 'Here is the content',
-                subContent: 'Here is the sub preview content'
-              },
-              {
-                id: 4,
-                updatedDate: "April 13th, 2018",
-                thumbnail: 'https://goo.gl/SQNvnV',
-                title: 'Happy Coding',
-                author: "Darrell Washington",
-                content: 'Here is the content',
-                subContent: 'Here is the sub preview content'
-              }
-            ]);
-            resolve();
-          }, 500)
-        })
+        return (
+          axios.get('https://blog-vue-97.firebaseio.com/posts.json')
+              .then(payload => {
+                const loadedPosts = [];
+                for (const key in payload.data) {
+                  loadedPosts.push({...payload.data[key], id: key});
+                }
+                commit('setPosts',loadedPosts)
+              })
+              .catch(e => error(e))
+        );
       },
       setPosts(vuexContext, posts) {
-        vuexContext.commit('setPosts', posts)
+        vuexContext.commit('setPosts', posts);
+      },
+      updatePosts({commit}, posts) {
+        commit('updatePosts', posts);
+      },
+      editPost({state,commit}, editedPost) {
+        const filteredPosts = state.loadedPosts.filter(post => post.id !== editPost.id);
+        const newPosts = filteredPosts.push(editedPost);
+        commit('setPosts', newPosts);
       }
     },
     getters: {

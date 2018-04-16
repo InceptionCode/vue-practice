@@ -8,13 +8,18 @@
       type="text"
       label="Title"
     />
-    <app-control-input v-model="editPost.thumbnailLink"
+    <app-control-input v-model="editPost.thumbnail"
       type="text"
       label="Thumbnail Link"
     />
     <app-control-input v-model="editPost.content"
       type="textarea"
       label="Content"
+      controlType="textarea"
+    />
+    <app-control-input v-model="editPost.subContent"
+      type="textarea"
+      label="Content Preview"
       controlType="textarea"
     />
     <app-button type="submit"
@@ -33,6 +38,8 @@
 import AppControlInput from '@/components/ui/AppControlInput'
 import AppButton from '@/components/ui/AppButton'
 
+import moment from 'moment'
+
 export default {
  layout: "nav",
  props: ['post'],
@@ -45,16 +52,19 @@ export default {
       editPost: this.post 
         ? { ...this.post } 
         : {
-            author: '',
+            thumbnail: '',
             title: '',
-            thumbnailLink: '',
-            content: ''
+            author: '',
+            content: '',
+            subContent: ''
           }
     }
   },
   methods: {
     savePost() {
-      console.log(this.editPost);
+      const updatedDate = moment().format('MMMM Do YYYY');
+      this.editPost[updatedDate] = updatedDate;
+      this.$emit('savePost', this.editPost);
     },
     cancelPost () {
       this.$router.push('/App/admin');

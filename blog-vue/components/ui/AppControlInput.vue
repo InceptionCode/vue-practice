@@ -4,12 +4,12 @@
     <input v-if="controlType === 'input'" 
       v-bind="$attrs"
       :value="value"
-      @input="emit('input', $event.target.value)"
+      @input="$emit('input', $event.target.value)"
     >
     <textarea cols="30" rows="10" 
       v-if="controlType === 'textarea'" 
       :value="value"
-      @input="emit('input', $event.target.value)">
+      @input="$emit('input', $event.target.value)">
     </textarea>
   </div>
 </template>

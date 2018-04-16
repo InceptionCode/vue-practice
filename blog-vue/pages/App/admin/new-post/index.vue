@@ -5,7 +5,7 @@
       <app-nav :tabs="tabs"/>
     </header>
     <section class="new-post">
-      <app-admin-form />
+      <app-admin-form @savePost="submitPost"/>
     </section>
     <section class="existing-post">
       <h1 class ="section-title">Existing Post</h1>
@@ -22,6 +22,9 @@ import AppNav from '@/components/global/AppNav'
 import AppAdminForm from '@/components/admin/AppAdminForm'
 import AppPostsSection from '@/components/posts/AppPostsSection'
 
+import axios from 'axios'
+import moment from 'moment'
+
 export default {
  layout: "nav",
  components: {
@@ -30,29 +33,31 @@ export default {
    'app-admin-form': AppAdminForm
  },
  mixins: [navData],
- data() {
-    return {
-      editPost: {
-        author: '',
-        title: '',
-        thumbnailLink: '',
-        content: ''
-      }
-    }
-  },
   computed: {
     loadedPosts () {
       return this.$store.getters.loadedPosts;
     }
   },
   methods: {
-    savePost() {
-      console.log(this.editPost);
+    submitPost(postData) {
+      axios.post('https://blog-vue-97.firebaseio.com/posts.json', postData)
+        .then(result => {
+          this.$store.dispatch('updatePosts',postData);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     cancelPost () {
       this.$router.push('/App/admin');
     }
   }
 }
+/*
+Soon to implement: Send user to success page if succesful or to the failed page if form couldn't be submitted.
+
+this.$router.push('../successful-form');
+this.$router.push('../error-form');
+*/
 </script>
 
