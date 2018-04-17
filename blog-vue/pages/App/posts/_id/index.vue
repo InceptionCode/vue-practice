@@ -33,7 +33,7 @@ import axios from 'axios'
 export default {
   asyncData({params, error}) {
     return (
-      axios.get('https://blog-vue-97.firebaseio.com/posts'+ `/${params.id}.json`)
+      axios.get(process.env.baseUrl + 'posts'+ `/${params.id}.json`)
         .then(payload => {
           return {
             loadedPost: payload.data

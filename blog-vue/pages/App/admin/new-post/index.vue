@@ -20,16 +20,11 @@
 import navData from '@/assets/mixins/app-nav'
 import AppNav from '@/components/global/AppNav'
 import AppAdminForm from '@/components/admin/AppAdminForm'
-import AppPostsSection from '@/components/posts/AppPostsSection'
-
-import axios from 'axios'
-import moment from 'moment'
 
 export default {
  layout: "nav",
  components: {
    'app-nav': AppNav,
-   'app-posts-section': AppPostsSection,
    'app-admin-form': AppAdminForm
  },
  mixins: [navData],
@@ -40,13 +35,7 @@ export default {
   },
   methods: {
     submitPost(postData) {
-      axios.post('https://blog-vue-97.firebaseio.com/posts.json', postData)
-        .then(result => {
-          this.$store.dispatch('updatePosts',postData);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      this.$store.dispatch('addPosts',postData);
     },
     cancelPost () {
       this.$router.push('/App/admin');

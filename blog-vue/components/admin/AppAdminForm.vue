@@ -35,18 +35,12 @@
 </template>
 
 <script>
-import AppControlInput from '@/components/ui/AppControlInput'
-import AppButton from '@/components/ui/AppButton'
 
 import moment from 'moment'
 
 export default {
  layout: "nav",
  props: ['post'],
- components: {
-   'app-control-input': AppControlInput,
-   'app-button': AppButton
- },
  data() {
     return {
       editPost: this.post 

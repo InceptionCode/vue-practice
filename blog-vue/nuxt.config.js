@@ -25,7 +25,7 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#3B8070' },
+  loading: { color: '#48E748', height: '3px' },
 
   /*
   ** Global CSS
@@ -41,6 +41,7 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '@/plugins/core-components.js'
   ],
 
   /*
@@ -76,5 +77,8 @@ module.exports = {
         })
       }
     }
+  },
+  env: {
+    baseUrl: process.env.BASE_URL || 'https://blog-vue-97.firebaseio.com/'
   }
 }

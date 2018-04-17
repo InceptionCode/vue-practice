@@ -14,7 +14,6 @@
 import navData from '@/assets/mixins/app-nav'
 import featurePreviewData from '@/assets/mixins/feature-preview'
 import AppNav from '@/components/global/AppNav'
-import AppPostsSection from '@/components/posts/AppPostsSection'
 
 
 export default {
@@ -27,7 +26,6 @@ export default {
   },
   components: {
     "app-nav": AppNav,
-    "app-posts-section": AppPostsSection
   },
   mixins: [navData,featurePreviewData],
   computed: {

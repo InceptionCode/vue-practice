@@ -18,7 +18,7 @@ export default {
   },
   asyncData({params, error}) {
     return (
-      axios.get('https://blog-vue-97.firebaseio.com/posts'+ `/${params.postId}.json`)
+      axios.get(process.env.baseUrl + 'posts'+ `/${params.postId}.json`)
         .then(payload => {
           return {
             loadedPost: payload.data
@@ -30,13 +30,11 @@ export default {
   methods: {
     submitPost(postData) {
       const {params} = this.$route;
-      axios.put('https://blog-vue-97.firebaseio.com/posts' + `/${params.postId}.json`, postData)
-        .then(payload => {
-          this.$store.dispatch('editPost', postData);
-        })
-        .catch(e => {
-          console.log(e)
-        })
+      const postPayload = { 
+        id: params.postId,
+        postData
+      };
+      this.$store.dispatch('editPost', postPayload);
     },
   }
 }

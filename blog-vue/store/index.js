@@ -8,14 +8,20 @@ const Store = () => {
       setPosts(state, posts) {
         state.loadedPosts = posts
       },
-      updatePosts(state, post) {
+      addPosts(state, post) {
         state.loadedPosts.push(post);
+      },
+      editPost(state, post) {
+        const postIndex = state.loadedPosts.findIndex(post =>{
+          return post.id === editedPost.id
+        });
+        state.loadedPosts[postIndex] = editedPost
       }
     },
     actions: {
-      nuxtServerInit({commit},{params, error}) {
+      nuxtServerInit({commit},{error}) {
         return (
-          axios.get('https://blog-vue-97.firebaseio.com/posts.json')
+          axios.get(process.env.baseUrl + 'posts.json')
               .then(payload => {
                 const loadedPosts = [];
                 for (const key in payload.data) {
@@ -26,16 +32,26 @@ const Store = () => {
               .catch(e => error(e))
         );
       },
-      setPosts(vuexContext, posts) {
-        vuexContext.commit('setPosts', posts);
+      addPosts({commit}, posts) {
+        axios.post(process.env.baseUrl + 'posts.json', posts)
+          .then(res => {
+            commit('addPosts',{...posts, id: res.id});
+            this.$router.push("/App/admin");
+          })
+          .catch(error => {
+            console.log(error);
+          });
       },
-      updatePosts({commit}, posts) {
-        commit('updatePosts', posts);
-      },
-      editPost({state,commit}, editedPost) {
-        const filteredPosts = state.loadedPosts.filter(post => post.id !== editPost.id);
-        const newPosts = filteredPosts.push(editedPost);
-        commit('setPosts', newPosts);
+      editPost({commit}, postPayload) {
+        const {id, postData} = postPayload;
+        axios.put(process.env.baseUrl + 'posts' + `/${id}.json`, postData)
+          .then(payload => {
+            commit('editPost', postData);
+            this.$router.push('/App/admin');
+          })
+          .catch(e => {
+            console.log(e)
+          })
       }
     },
     getters: {

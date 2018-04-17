@@ -19,13 +19,11 @@
 <script>
 import navData from '@/assets/mixins/app-nav'
 import AppNav from '@/components/global/AppNav'
-import AppPostsSection from '@/components/posts/AppPostsSection'
 
 export default {
   layout: "nav",
   components: {
    'app-nav': AppNav,
-   'app-posts-section': AppPostsSection
   },
   mixins: [navData],
   computed: {
