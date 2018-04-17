@@ -57,6 +57,7 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+    baseURL: process.env.BASE_URL || 'https://blog-vue-97.firebaseio.com/'
   },
 
   /*
@@ -79,6 +80,5 @@ module.exports = {
     }
   },
   env: {
-    baseUrl: process.env.BASE_URL || 'https://blog-vue-97.firebaseio.com/'
   }
 }

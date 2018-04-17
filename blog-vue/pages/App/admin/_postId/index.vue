@@ -10,18 +10,17 @@
 
 <script>
 import AppAdminForm from '@/components/admin/AppAdminForm'
-import axios from 'axios'
 
 export default {
   components: {
     'app-admin-form': AppAdminForm
   },
-  asyncData({params, error}) {
+  asyncData({params, app, error}) {
     return (
-      axios.get(process.env.baseUrl + 'posts'+ `/${params.postId}.json`)
+      app.$axios.$get('posts'+ `/${params.postId}.json`)
         .then(payload => {
           return {
-            loadedPost: payload.data
+            loadedPost: payload
           }
         })
         .catch(e => error(e))

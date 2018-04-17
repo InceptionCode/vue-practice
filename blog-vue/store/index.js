@@ -1,5 +1,4 @@
 import Vuex from 'vuex'
-import axios from 'axios'
 
 const Store = () => {
   return new Vuex.Store({
@@ -19,13 +18,13 @@ const Store = () => {
       }
     },
     actions: {
-      nuxtServerInit({commit},{error}) {
+      nuxtServerInit({commit},{app,error}) {
         return (
-          axios.get(process.env.baseUrl + 'posts.json')
+          app.$axios.$get('posts.json')
               .then(payload => {
                 const loadedPosts = [];
-                for (const key in payload.data) {
-                  loadedPosts.push({...payload.data[key], id: key});
+                for (const key in payload) {
+                  loadedPosts.push({...payload[key], id: key});
                 }
                 commit('setPosts',loadedPosts)
               })
@@ -33,7 +32,7 @@ const Store = () => {
         );
       },
       addPosts({commit}, posts) {
-        axios.post(process.env.baseUrl + 'posts.json', posts)
+        this.$axios.$post('posts.json', posts)
           .then(res => {
             commit('addPosts',{...posts, id: res.id});
             this.$router.push("/App/admin");
@@ -44,7 +43,7 @@ const Store = () => {
       },
       editPost({commit}, postPayload) {
         const {id, postData} = postPayload;
-        axios.put(process.env.baseUrl + 'posts' + `/${id}.json`, postData)
+        this.$axios.$put('posts' + `/${id}.json`, postData)
           .then(payload => {
             commit('editPost', postData);
             this.$router.push('/App/admin');

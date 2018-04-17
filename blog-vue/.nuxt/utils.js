@@ -120,7 +120,7 @@ export async function setContext(app, context) {
       payload: context.payload,
       error: context.error,
       base: '/',
-      env: {"baseUrl":"https://blog-vue-97.firebaseio.com/"}
+      env: {}
     }
     // Only set once
     if (context.req) app.context.req = context.req

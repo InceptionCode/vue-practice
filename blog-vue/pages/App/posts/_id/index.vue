@@ -28,15 +28,13 @@
 import navData from '@/assets/mixins/app-nav'
 import AppNav from '@/components/global/AppNav'
 
-import axios from 'axios'
-
 export default {
-  asyncData({params, error}) {
+  asyncData({params, app, error}) {
     return (
-      axios.get(process.env.baseUrl + 'posts'+ `/${params.id}.json`)
+      app.$axios.$get('posts'+ `/${params.id}.json`)
         .then(payload => {
           return {
-            loadedPost: payload.data
+            loadedPost: payload
           }
         })
         .catch(e => error(e))
