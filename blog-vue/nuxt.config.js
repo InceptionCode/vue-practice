@@ -80,5 +80,6 @@ module.exports = {
     }
   },
   env: {
+    API_KEY: 'AIzaSyB0wGR-uWLKhPJrFC1Cb6CKe136inNv0g8'
   }
 }
