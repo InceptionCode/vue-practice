@@ -29,29 +29,21 @@ export default {
   layout: "nav",
   data() {
     return {
-      isLogin: false,
+      isLogin: true,
       emailInput: '',
       passwordInput: ''
     }
   },
   methods: {
     submitAuthForm() {
-      let  authURL=`https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${process.env.API_KEY}`;
-
-      if(!this.isLogin) {
-        authURL=`https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${process.env.API_KEY}`;
-      }
-      this.$axios.$post(authURL, {
+      this.$store.dispatch('authenticateUser', {
+        isLogin: this.isLogin,
         email: this.emailInput,
-        password: this.passwordInput,
-        returnSecureToken: true
+        password: this.passwordInput
       })
-      .then(res => {
-        console.log(res)
-      })
-      .catch(e=> {
-        console.log(e)
-      })
+      .then(() => {
+        this.$router.push('/app/admin');
+      });
     }
   }
 }

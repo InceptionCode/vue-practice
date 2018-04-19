@@ -12,6 +12,8 @@
 import AppAdminForm from '@/components/admin/AppAdminForm'
 
 export default {
+  layout: 'nav',
+  middleware: ['check-auth','auth'], 
   components: {
     'app-admin-form': AppAdminForm
   },
@@ -33,7 +35,8 @@ export default {
         id: params.postId,
         postData
       };
-      this.$store.dispatch('editPost', postPayload);
+      this.$store.dispatch('editPost', postPayload)
+        .then(() => this.$router.push('/App/admin'));
     },
   }
 }

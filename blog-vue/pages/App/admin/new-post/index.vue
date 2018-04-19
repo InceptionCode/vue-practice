@@ -22,25 +22,26 @@ import AppNav from '@/components/global/AppNav'
 import AppAdminForm from '@/components/admin/AppAdminForm'
 
 export default {
- layout: "nav",
- components: {
-   'app-nav': AppNav,
-   'app-admin-form': AppAdminForm
- },
- mixins: [navData],
-  computed: {
-    loadedPosts () {
-      return this.$store.getters.loadedPosts;
-    }
+  layout: "nav",
+  middleware: ['check-auth','auth'],
+  components: {
+    'app-nav': AppNav,
+    'app-admin-form': AppAdminForm
   },
-  methods: {
-    submitPost(postData) {
-      this.$store.dispatch('addPosts',postData);
+  mixins: [navData],
+    computed: {
+      loadedPosts () {
+        return this.$store.getters.loadedPosts;
+      }
     },
-    cancelPost () {
-      this.$router.push('/App/admin');
+    methods: {
+      submitPost(postData) {
+        this.$store.dispatch('addPosts',postData);
+      },
+      cancelPost () {
+        this.$router.push('/App/admin');
+      }
     }
-  }
 }
 /*
 Soon to implement: Send user to success page if succesful or to the failed page if form couldn't be submitted.

@@ -22,6 +22,7 @@ import AppNav from '@/components/global/AppNav'
 
 export default {
   layout: "nav",
+  middleware: ['check-auth','auth'],
   components: {
    'app-nav': AppNav,
   },
@@ -30,7 +31,7 @@ export default {
     loadedPosts () {
       return this.$store.getters.loadedPosts;
     }
-  },
+  }
 }
 </script>
 
