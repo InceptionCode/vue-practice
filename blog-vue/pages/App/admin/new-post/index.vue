@@ -10,7 +10,7 @@
     <section class="existing-post">
       <h1 class ="section-title">Existing Post</h1>
       <app-posts-section :postPreview="loadedPosts"
-        :is-admin="true" 
+        :is-admin="isAuthenticated" 
       />
     </section>
   </div>
@@ -32,6 +32,9 @@ export default {
     computed: {
       loadedPosts () {
         return this.$store.getters.loadedPosts;
+      },
+      isAuthenticated () {
+        return this.$store.getters.isAuthenticated;
       }
     },
     methods: {

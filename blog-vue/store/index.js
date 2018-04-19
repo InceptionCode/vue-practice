@@ -40,7 +40,7 @@ const Store = () => {
               .catch(e => error(e))
         );
       },
-      authenticateUser({state,disptch,commit}, authData) {
+      authenticateUser({state,dispatch,commit}, authData) {
         let  authURL=`https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${process.env.API_KEY}`;
 
         if(!authData.isLogin) {
@@ -64,6 +64,8 @@ const Store = () => {
       setLogoutTimer({commit}, duration) {
         setTimeout(()=>{
           commit('clearToken');
+          localStorage.removeItem('token');
+          localStorage.removeItem('tokenExpiration');
         }, duration)
       },
       initAuth({commit,dispatch}) {
@@ -73,7 +75,6 @@ const Store = () => {
         if(new Date().getTime() > +expireDate || !token) {
           return;
         }
-        console.log(+expireDate - new Date().getTime())
         dispatch('setLogoutTimer', +expireDate - new Date().getTime())
         commit('setToken', token);
       },
@@ -96,6 +97,11 @@ const Store = () => {
           .catch(e => {
             console.log(e)
           })
+      },
+      logout({commit}) {
+        commit('clearToken');
+        localStorage.removeItem('token');
+        localStorage.removeItem('tokenExpiration');
       }
     },
     getters: {

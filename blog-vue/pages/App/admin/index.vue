@@ -6,11 +6,12 @@
     </header>
     <section class="add-post">
       <button @click="$router.push('admin/new-post')">Create Post</button>
+      <button class="logout" @click="onLogout">Logoout</button>
     </section>
     <section class="existing-post">
       <h1 class ="section-title">Existing Post</h1>
       <app-posts-section :postPreview="loadedPosts"
-        :is-admin="true"
+        :is-admin="isAuthenticated"
       />
     </section>
   </div>
@@ -30,6 +31,15 @@ export default {
   computed: {
     loadedPosts () {
       return this.$store.getters.loadedPosts;
+    },
+    isAuthenticated () {
+      return this.$store.getters.isAuthenticated;
+    }
+  },
+  methods: {
+    onLogout() {
+      this.$store.dispatch('logout');
+      this.$router.push('/App/admin/auth');
     }
   }
 }

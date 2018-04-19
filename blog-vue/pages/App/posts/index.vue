@@ -6,6 +6,7 @@
     </header>
     <h1 class="section-title">All posts</h1>
     <app-posts-section :postPreview="loadedPosts" 
+      :is-admin="isAuthenticated"
     />
   </div>
 </template>
@@ -31,6 +32,9 @@ export default {
   computed: {
     loadedPosts () {
      return this.$store.getters.loadedPosts;
+    },
+    isAuthenticated () {
+      return this.$store.getters.isAuthenticated;
     }
   },
 }
