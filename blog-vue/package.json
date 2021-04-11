@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.0.0",
-    "css-loader": "^0.28.11",
+    "css-loader": "^5.2.0",
     "moment": "^2.22.1",
     "node-sass": "^4.8.3",
-    "nuxt": "^1.0.0",
+    "nuxt": "^2.15.4",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.3"
   },
