@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDo</title>
+    <link rel="stylesheet" href="../font-awesome-4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>Vue-Todo</h1>
+        <br>
+        <input type="text" placeholder="Add todo here...." v-model = "input" v-on:keyup.enter= "addTodo">
+        <ul>
+            <li v-for = "todo in computedTodos" :key = "todo.id">
+                <span class="check" @click.prevent="checkTodo(todo.id)">
+                    <i :class="['fa', 'fa-check', { show: todo.completed }]"></i>
+                </span>
+                <span :class = "{completed: todo.completed}">{{todo.text}}</span>
+                <span class="delete" title = "delete" @click = "deleteTodo(todo.id)">
+                    <i class="fa fa-times"></i>    
+                </span>
+                <span class="edit" title = "edit" @click = "editTodo(todo.id)">
+                    <i class="fa fa-pencil"></i>     
+                </span>
+            </li>
+        </ul>
+        <br>
+        <button class= "sort-button" @click ="sortList">Sort</button>
+        <button :class= "['add-button', { disabled: disableAddBtn }]" @click ="addTodo" :disabled="disableAddBtn">Add</button>
+        <button class= "reverse-button" @click ="reverseList">Reverse</button>
+        <p :class="editingClasses">
+            Edit mode: <strong v-if="editing">On</strong>
+            <strong v-else>Off</strong>
+        </p>
+    </div>
+    
+    <script src="../js/todo-app.js"></script>
+</body>
+</html>
