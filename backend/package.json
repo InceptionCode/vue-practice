@@ -1,0 +1,41 @@
+// deployment scripts must be rewritten
+{
+  "name": "vuex-blackbook",
+  "version": "1.0.0",
+  "description": "Contact book/messaging app",
+  "main": "lib/backend/src/index.js",
+  "scripts": {
+    "serve": "tsc && ENVIRONMENT=development node lib/backend/src/index.js",
+    "deploy:devapi": "tsc && gcloud functions deploy api --runtime nodejs12 --env-vars-file .env.yaml --trigger-http",
+    "deploy:prodapi": "tsc && gcloud functions deploy api --runtime nodejs12 --update-env-vars ENVIRONMENT=production --trigger-http",
+    "deleteApi": "tsc && gcloud functions delete api",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/InceptionCode/vue-practice.git"
+  },
+  "keywords": [
+    "vue",
+    "vuex",
+    "javascript"
+  ],
+  "author": "InceptionCode",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/InceptionCode/vue-practice/issues"
+  },
+  "homepage": "https://github.com/InceptionCode/vue-practice#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "firebase-admin": "^9.6.0",
+    "firebase-functions": "^3.13.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.11",
+    "@types/node": "^14.14.41",
+    "typescript": "^4.2.4"
+  }
+}
