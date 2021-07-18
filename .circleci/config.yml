@@ -10,7 +10,7 @@ vm_settings: &vm_settings
     - image: circleci/node:latest
 
 build_requires: &build_requires
-  require: [lint, test, test_e2e]
+  requires: [lint, test, test_e2e]
 
 install_restore_cache: &install_restore_cache
   name: Restore cached dependencies
@@ -29,78 +29,13 @@ install_save_cache: &install_save_cache
     - ~/.cache
   key: dependencies-{{ checksum "yarn.lock" }}
 
-lint_job: &lint_job
-  name: lint
-  paramaters:
-    dir:
-      type: string
-      description: The directory to run action for.
-    steps:
-      - swissknife/sk-checkout:
-          swissknife_sha: << pipeline.parameters.swissknife_sha >>
-      - run:
-          name: Run lint
-          command: |
-            cd << parameters.dir >>
-            yarn lint
-  # lint commands for correct package.
-
-test_job: &test_job
-  name: test
-  paramaters:
-    dir:
-      type: string
-      description: The directory to run action for.
-    steps:
-      - swissknife/sk-checkout:
-          swissknife_sha: << pipeline.parameters.swissknife_sha >>
-      # Install dependencies
-      - restore_cache: *install_restore_cache
-      - run: *install_run
-      - save_cache: *install_save_cache
-      - run:
-          name: Run test
-          command: |
-            cd << parameters.dir >>
-            yarn unit-test
-
-      # Store test artifacts
-      - store_artifacts:
-          path: << paramaters.dir >>/tests/unit/coverage
-
-  # test commands for correct package.
-
-test_e2e_job: &test_e2e_job
-  name: test_e2e
-  paramaters:
-    dir:
-      type: string
-      description: The directory to run action for.
-    steps:
-      - swissknife/sk-checkout:
-          swissknife_sha: << pipeline.parameters.swissknife_sha >>
-      # Install dependencies
-      - restore_cache: *install_restore_cache
-      - run: *install_run
-      - save_cache: *install_save_cache
-
-      - run:
-          name: Run e2e tests
-          # Install libgconf, needed by Cypress' Electron, then run tests
-          command: sudo apt-get install libgconf-2-4 && cd frontend && yarn test-e2e
-      # Store test artifacts
-      - store_artifacts:
-          path: frontend/tests/e2e/videos
-      - store_artifacts:
-          path: frontend/tests/e2e/screenshots
-
-  # e2e test commands for correct package.
-
-build_action: &build_action
+build_persist_step: &build_persist_step
   - persist_to_workspace:
       root: << parameter.dir >>/workspace
       paths:
         - build-output
+
+build_artifacts_step: &build_artifacts_step
   - store_artifacts:
       path: << parameters.dir >>/dist
 
@@ -145,6 +80,76 @@ jobs:
           additional-param-map: '{"run_trigger_workflow": false}'
           use-swissknife-sha: true
 
+  lint:
+    <<: *vm_settings
+    name: lint
+    paramaters:
+      dir:
+        type: string
+        description: The directory to run action for.
+    steps:
+      - swissknife/sk-checkout:
+          swissknife_sha: << pipeline.parameters.swissknife_sha >>
+      - run:
+          name: Run lint
+          command: |
+            cd << parameters.dir >>
+            yarn lint
+    # lint commands for correct package.
+
+  test:
+    <<: *vm_settings
+    name: test
+    paramaters:
+      dir:
+        type: string
+        description: The directory to run action for.
+    steps:
+      - swissknife/sk-checkout:
+          swissknife_sha: << pipeline.parameters.swissknife_sha >>
+      # Install dependencies
+      - restore_cache: *install_restore_cache
+      - run: *install_run
+      - save_cache: *install_save_cache
+      - run:
+          name: Run test
+          command: |
+            cd << parameters.dir >>
+            yarn unit-test
+
+      # Store test artifacts
+      - store_artifacts:
+          path: << paramaters.dir >>/tests/unit/coverage
+
+    # test commands for correct package.
+
+  test_e2e:
+    <<: *vm_settings
+    name: test_e2e
+    paramaters:
+      dir:
+        type: string
+        description: The directory to run action for.
+    steps:
+      - swissknife/sk-checkout:
+          swissknife_sha: << pipeline.parameters.swissknife_sha >>
+      # Install dependencies
+      - restore_cache: *install_restore_cache
+      - run: *install_run
+      - save_cache: *install_save_cache
+
+      - run:
+          name: Run e2e tests
+          # Install libgconf, needed by Cypress' Electron, then run tests
+          command: sudo apt-get install libgconf-2-4 && cd frontend && yarn test-e2e
+        # Store test artifacts
+      - store_artifacts:
+          path: frontend/tests/e2e/videos
+      - store_artifacts:
+          path: frontend/tests/e2e/screenshots
+
+    # e2e test commands for correct package.
+
   build:
     <<: *vm_settings
     <<: *build_requires
@@ -165,7 +170,8 @@ jobs:
           name: Build for development
           command: yarn build:dev
       # store artifacts and persist
-      - <<: *build_action
+      - <<: *build_persist_step
+      - <<: *build_artifacts_step
 
   buildProd:
     <<: *vm_settings
@@ -188,40 +194,34 @@ jobs:
           command: yarn build:prod
 
       # Store build artifacts & persist
-      - <<: *build_action
-
-   deploy_approval:
-     <<: *vm_settings
-     requires: [buildProd]
-     name: deploy approval
-     type: approval
-     message: Pending Approval
+      - <<: *build_persist_step
+      - <<: *build_artifacts_step
 
   deploy:
-     <<: *vm_settings
-     paramaters:
-       dir:
-         type: string
-         description: The directory to grab build workspace.
-     name: deploy
+    <<: *vm_settings
+    paramaters:
+      dir:
+        type: string
+        description: The directory to grab build workspace.
+      name: deploy
 
-     steps:
-       - attach_workspace:
-           at: /<< parameters.dir >>/workspace
-       # use prod Build for production deploy
-       - run: |
-           echo /<< parameters.dir >>/workspace/build-output
+    steps:
+      - attach_workspace:
+          at: /<< parameters.dir >>/workspace
+        # use prod Build for production deploy
+      - run: |
+          echo /<< parameters.dir >>/workspace/build-output
 
 workflows:
   version: 2.1
   backend:
     when: << pipline.parameters.run_backend >>
     jobs:
-      - <<: *lint_job
-      - <<: *test_job
-        dir: backend
-        name: test
-      - <<: *test_e2e_job
+      - lint
+      - test:
+          dir: backend
+          name: test
+      - test_e2e
       - build:
           dir: backend
           name: build
@@ -231,8 +231,11 @@ workflows:
           name: build prod
           <<: *filter_only_master
       - deploy_approval:
+          <<: *vm_settings
+          requires: [buildProd]
           name: deploy approval
-          dir: backend
+          type: approval
+          message: Pending Approval
           <<: *filter_only_master
       - deploy:
           name: deploy
@@ -241,11 +244,11 @@ workflows:
   frontend:
     when: << pipline.parameters.run_frontend >>
     jobs:
-      - <<: *lint_job
-      - <<: *test_job
-        dir: frontend
-        name: test
-      - <<: *test_e2e_job
+      - lint
+      - test:
+          dir: frontend
+          name: test
+      - test_e2e
       - build:
           dir: frontend
           name: build
@@ -255,8 +258,11 @@ workflows:
           name: build prod
           <<: *filter_only_master
       - deploy_approval:
+          <<: *vm_settings
+          requires: [buildProd]
           name: deploy approval
-          dir: frontend
+          type: approval
+          message: Pending Approval
           <<: *filter_only_master
       - deploy:
           name: deploy
