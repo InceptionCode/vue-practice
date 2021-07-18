@@ -1,0 +1,9 @@
+{
+  "name": "vue-practice",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": ["backend", "frontend_vue-todo", "frontend_vuex-blackbook"],
+  "repository": "git@github.com:InceptionCode/vue-practice.git",
+  "author": "Darrell Washington <darrellwjr.com@gmail.com>",
+  "license": "MIT"
+}

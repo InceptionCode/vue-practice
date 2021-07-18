@@ -1,0 +1,269 @@
+version: 2.1
+
+orbs:
+  swissknife: roopakv/swissknfie@0.62.0
+
+# Setup
+vm_settings: &vm_settings
+  docker:
+    # https://circleci.com/docs/2.0/circleci-images/#nodejs
+    - image: circleci/node:latest
+
+build_requires: &build_requires
+  require: [lint, test, test_e2e]
+
+install_restore_cache: &install_restore_cache
+  name: Restore cached dependencies
+  keys:
+    - dependencies-{{ checksum "yarn.lock" }}
+    # Fall back to using the latest cache if no exact match is found
+    - dependencies
+
+install_run: &install_run
+  name: Install dependencies with Yarn, purely from the lockfile
+  command: yarn install --frozen-lockfile
+
+install_save_cache: &install_save_cache
+  name: Cache installed dependencies
+  paths:
+    - ~/.cache
+  key: dependencies-{{ checksum "yarn.lock" }}
+
+lint_job: &lint_job
+  name: lint
+  paramaters:
+    dir:
+      type: string
+      description: The directory to run action for.
+    steps:
+      - swissknife/sk-checkout:
+          swissknife_sha: << pipeline.parameters.swissknife_sha >>
+      - run:
+          name: Run lint
+          command: |
+            cd << parameters.dir >>
+            yarn lint
+  # lint commands for correct package.
+
+test_job: &test_job
+  name: test
+  paramaters:
+    dir:
+      type: string
+      description: The directory to run action for.
+    steps:
+      - swissknife/sk-checkout:
+          swissknife_sha: << pipeline.parameters.swissknife_sha >>
+      # Install dependencies
+      - restore_cache: *install_restore_cache
+      - run: *install_run
+      - save_cache: *install_save_cache
+      - run:
+          name: Run test
+          command: |
+            cd << parameters.dir >>
+            yarn unit-test
+
+      # Store test artifacts
+      - store_artifacts:
+          path: << paramaters.dir >>/tests/unit/coverage
+
+  # test commands for correct package.
+
+test_e2e_job: &test_e2e_job
+  name: test_e2e
+  paramaters:
+    dir:
+      type: string
+      description: The directory to run action for.
+    steps:
+      - swissknife/sk-checkout:
+          swissknife_sha: << pipeline.parameters.swissknife_sha >>
+      # Install dependencies
+      - restore_cache: *install_restore_cache
+      - run: *install_run
+      - save_cache: *install_save_cache
+
+      - run:
+          name: Run e2e tests
+          # Install libgconf, needed by Cypress' Electron, then run tests
+          command: sudo apt-get install libgconf-2-4 && cd frontend && yarn test-e2e
+      # Store test artifacts
+      - store_artifacts:
+          path: frontend/tests/e2e/videos
+      - store_artifacts:
+          path: frontend/tests/e2e/screenshots
+
+  # e2e test commands for correct package.
+
+build_action: &build_action
+  persist_to_workspace:
+      root: << parameter.dir >>/workspace
+      paths:
+        - build-output
+    - store_artifacts:
+        path: << parameters.dir >>/dist
+
+filter_only_master: &filter_only_master
+  filters:
+    branches:
+      only: master
+
+filter_ignore_master: &filter_ignore_master
+  filters:
+    branches:
+      ignore: master
+
+parameters:
+  run_frontend:
+    default: false
+    type: boolean
+  run_backend:
+    default: false
+    type: boolean
+  run_trigger_workflow:
+    default: true
+    type: boolean
+  swissknife_sha:
+    default: ""
+    type: string
+
+jobs:
+  trigger-needed-workflows:
+    <<: *vm_settings
+    steps:
+      - checkout
+      - swissknife/trigger-workflows-for-all-modified:
+          base-branch: master
+          run-mode-for-base-branch: run_for_last_commit
+          use-divergence-point: true
+          code-param-name-map: '
+            [
+              {"regex": "^(frontend|common).*", "param_name": "run_frontend"},
+              {"regex": "^(backend|common).*", "param_name": "run_backend"},
+            ]'
+          additional-param-map: '{"run_trigger_workflow": false}'
+          use-swissknife-sha: true
+
+  build:
+    <<: *vm_settings
+    <<: *build_requires
+    name: build
+    paramaters:
+      dir:
+        type: string
+        description: The directory to save artifact.
+    steps:
+      - checkout
+
+      # Install dependencies
+      - restore_cache: *install_restore_cache
+      - run: *install_run
+      - save_cache: *install_save_cache
+
+      - run:
+          name: Build for development
+          command: yarn build:dev
+      # store artifacts and persist
+      - <<: *build_action
+
+  buildProd:
+    <<: *vm_settings
+    <<: *build_requires
+    name: build prod
+    paramaters:
+      dir:
+        type: string
+        description: The directory to save artifact.
+    steps:
+      - checkout
+
+      # Install dependencies
+      - restore_cache: *install_restore_cache
+      - run: *install_run
+      - save_cache: *install_save_cache
+
+      - run:
+          name: Build for development
+          command: yarn build:prod
+
+      # Store build artifacts & persist
+      - <<: *build_action
+
+   deploy_approval:
+     <<: *vm_settings
+     requires: [buildProd]
+     name: deploy approval
+     type: approval
+     message: Pending Approval
+
+  deploy:
+     <<: *vm_settings
+     paramaters:
+       dir:
+         type: string
+         description: The directory to grab build workspace.
+     name: deploy
+
+     steps:
+       - attach_workspace:
+           at: /<< parameters.dir >>/workspace
+       # use prod Build for production deploy
+       - run: |
+           echo /<< parameters.dir >>/workspace/build-output
+
+workflows:
+  version: 2.1
+  backend:
+    when: << pipline.parameters.run_backend >>
+    jobs:
+      - <<: *lint_job
+      - <<: *test_job
+        dir: backend
+        name: test
+      - <<: *test_e2e_job
+      - build:
+          dir: backend
+          name: build
+          <<: *filter_ignore_master
+      - buildProd:
+          dir: backend
+          name: build prod
+          <<: *filter_only_master
+      - deploy_approval:
+          name: deploy approval
+          dir: backend
+          <<: *filter_only_master
+      - deploy:
+          name: deploy
+          dir: backend
+          <<: *filter_only_master
+  frontend:
+    when: << pipline.parameters.run_frontend >>
+    jobs:
+      - <<: *lint_job
+      - <<: *test_job
+        dir: frontend
+        name: test
+      - <<: *test_e2e_job
+      - build:
+          dir: frontend
+          name: build
+          <<: *filter_ignore_master
+      - buildProd:
+          dir: frontend
+          name: build prod
+          <<: *filter_only_master
+      - deploy_approval:
+          name: deploy approval
+          dir: frontend
+          <<: *filter_only_master
+      - deploy:
+          name: deploy
+          dir: frontend
+          <<: *filter_only_master
+
+  trigger-needed-workflows:
+    when: << pipeline.parameters.run_trigger_workflow >>
+    jobs:
+      - trigger-needed-workflows

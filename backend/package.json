@@ -1,6 +1,5 @@
-// deployment scripts must be rewritten
 {
-  "name": "vuex-blackbook",
+  "name": "backend",
   "version": "1.0.0",
   "description": "Contact book/messaging app",
   "main": "lib/backend/src/index.js",
@@ -27,6 +26,7 @@
   },
   "homepage": "https://github.com/InceptionCode/vue-practice#readme",
   "dependencies": {
+    "cross-env": "^7.0.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
