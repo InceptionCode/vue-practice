@@ -230,7 +230,7 @@ workflows:
           <<: *filter_only_master
       - deploy_approval:
           <<: *vm_settings
-          requires: [buildProd]
+          requires: [build prod]
           name: deploy approval
           type: approval
           message: Pending Approval
