@@ -276,4 +276,5 @@ workflows:
   trigger-needed-workflows:
     when: << pipeline.parameters.run_trigger_workflow >>
     jobs:
-      - trigger-needed-workflows
+      - trigger-needed-workflows:
+          context: inception_code_context
