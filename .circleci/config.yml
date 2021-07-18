@@ -69,7 +69,7 @@ jobs:
     steps:
       - checkout
       - swissknife/trigger-workflows-for-all-modified:
-          base-branch: master
+          base-branch: $CIRCLE_BRANCH
           run-mode-for-base-branch: run_for_last_commit
           use-divergence-point: true
           code-param-name-map: '
