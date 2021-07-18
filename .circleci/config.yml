@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  swissknife: roopakv/swissknfie@0.62.0
+  swissknife: roopakv/swissknife@0.62.0
 
 # Setup
 vm_settings: &vm_settings
@@ -30,14 +30,14 @@ install_save_cache: &install_save_cache
   key: dependencies-{{ checksum "yarn.lock" }}
 
 build_persist_step: &build_persist_step
-  - persist_to_workspace:
-      root: << parameter.dir >>/workspace
-      paths:
-        - build-output
+  persist_to_workspace:
+    root: << parameters.dir >>/workspace
+    paths:
+      - build-output
 
 build_artifacts_step: &build_artifacts_step
-  - store_artifacts:
-      path: << parameters.dir >>/dist
+  store_artifacts:
+    path: << parameters.dir >>/dist
 
 filter_only_master: &filter_only_master
   filters:
@@ -82,8 +82,7 @@ jobs:
 
   lint:
     <<: *vm_settings
-    name: lint
-    paramaters:
+    parameters:
       dir:
         type: string
         description: The directory to run action for.
@@ -99,8 +98,7 @@ jobs:
 
   test:
     <<: *vm_settings
-    name: test
-    paramaters:
+    parameters:
       dir:
         type: string
         description: The directory to run action for.
@@ -119,14 +117,13 @@ jobs:
 
       # Store test artifacts
       - store_artifacts:
-          path: << paramaters.dir >>/tests/unit/coverage
+          path: << parameters.dir >>/tests/unit/coverage
 
     # test commands for correct package.
 
   test_e2e:
     <<: *vm_settings
-    name: test_e2e
-    paramaters:
+    parameters:
       dir:
         type: string
         description: The directory to run action for.
@@ -152,9 +149,7 @@ jobs:
 
   build:
     <<: *vm_settings
-    <<: *build_requires
-    name: build
-    paramaters:
+    parameters:
       dir:
         type: string
         description: The directory to save artifact.
@@ -175,9 +170,7 @@ jobs:
 
   buildProd:
     <<: *vm_settings
-    <<: *build_requires
-    name: build prod
-    paramaters:
+    parameters:
       dir:
         type: string
         description: The directory to save artifact.
@@ -199,11 +192,10 @@ jobs:
 
   deploy:
     <<: *vm_settings
-    paramaters:
+    parameters:
       dir:
         type: string
         description: The directory to grab build workspace.
-      name: deploy
 
     steps:
       - attach_workspace:
@@ -215,20 +207,26 @@ jobs:
 workflows:
   version: 2.1
   backend:
-    when: << pipline.parameters.run_backend >>
+    when: << pipeline.parameters.run_backend >>
     jobs:
-      - lint
+      - lint:
+          dir: backend
+          name: lint
       - test:
           dir: backend
           name: test
-      - test_e2e
+      - test_e2e:
+          dir: backend
+          name: test_e2e
       - build:
           dir: backend
           name: build
+          <<: *build_requires
           <<: *filter_ignore_master
       - buildProd:
           dir: backend
           name: build prod
+          <<: *build_requires
           <<: *filter_only_master
       - deploy_approval:
           <<: *vm_settings
@@ -242,20 +240,26 @@ workflows:
           dir: backend
           <<: *filter_only_master
   frontend:
-    when: << pipline.parameters.run_frontend >>
+    when: << pipeline.parameters.run_frontend >>
     jobs:
-      - lint
+      - lint:
+          dir: frontend
+          name: lint
       - test:
           dir: frontend
           name: test
-      - test_e2e
+      - test_e2e:
+          dir: frontend
+          name: test_e2e
       - build:
           dir: frontend
           name: build
+          <<: *build_requires
           <<: *filter_ignore_master
       - buildProd:
           dir: frontend
           name: build prod
+          <<: *build_requires
           <<: *filter_only_master
       - deploy_approval:
           <<: *vm_settings
