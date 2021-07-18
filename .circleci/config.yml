@@ -75,7 +75,7 @@ jobs:
           code-param-name-map: '
             [
               {"regex": "^(frontend|common).*", "param_name": "run_frontend"},
-              {"regex": "^(backend|common).*", "param_name": "run_backend"},
+              {"regex": "^(backend|common).*", "param_name": "run_backend"}
             ]'
           additional-param-map: '{"run_trigger_workflow": false}'
           use-swissknife-sha: true
