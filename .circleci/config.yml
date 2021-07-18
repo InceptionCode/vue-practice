@@ -97,12 +97,12 @@ test_e2e_job: &test_e2e_job
   # e2e test commands for correct package.
 
 build_action: &build_action
-  persist_to_workspace:
+  - persist_to_workspace:
       root: << parameter.dir >>/workspace
       paths:
         - build-output
-    - store_artifacts:
-        path: << parameters.dir >>/dist
+  - store_artifacts:
+      path: << parameters.dir >>/dist
 
 filter_only_master: &filter_only_master
   filters:
