@@ -63,9 +63,10 @@ typings/
 # eslint
 .eslintrc
 
-# vscode 
+# vscode
 .vscode
+.idea
 
 # lite-server
 
-# yarn / cli 
+# yarn / cli
