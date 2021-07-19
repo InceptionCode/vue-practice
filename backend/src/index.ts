@@ -6,6 +6,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 
 import * as routes from './routes'
+import ServerError from "./error/error";
 
 export const defaultAdmin = admin.initializeApp()
 const env: string = process.env.ENVIRONMENT
@@ -20,7 +21,13 @@ const server = express()
 
 server.use(cors({ origin: true }))
   .use(bodyParser.urlencoded({ extended: false }))
-  .use(bodyParser.json());
+  .use(bodyParser.json())
+  .use((err, req, res, next) => {
+  // logic
+    if (err.statusCode === '500') {
+      next(new ServerError(err));
+    }
+  });
 
 // Routes
 routes.register(server)
@@ -29,5 +36,5 @@ routes.register(server)
 if (isDev) {
   server.listen(3000)
 }
- 
+
 exports.api = functions.runWith({ memory: "2GB", timeoutSeconds: 120 }).https.onRequest(server)
