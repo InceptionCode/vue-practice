@@ -7,8 +7,14 @@ import { grabIdFromUserId } from '../../../common/utils/stringUtils'
 import { Firestore, QuerySnapshot, DocumentSnapshot } from '@google-cloud/firestore'
 import { defaultAdmin } from '../index'
 import IUser from '../../../common/interfaces/IUser'
-import { invalidUser, contactNotFound } from '../../../common/constants/errorConstants'
+import {
+  invalidUser,
+  authInvalidUser,
+  contactNotFound,
+  invalidUserMessage
+} from '../../../common/constants/errorConstants'
 import { resolveDto } from '../utils/dtoUtils'
+import ServerError from "../error/error";
 
 const firestore = new Firestore()
 const env: string = process.env.ENVIRONMENT
@@ -19,8 +25,8 @@ const ContactsRepository: IContactsRepository = {
     const user: DocumentSnapshot<UserDto> = await firestore.doc(`${env}/${userId}`).get()
 
     if (!user.exists)
-      throw new Error(invalidUser)
-  
+      throw new ServerError({ name: invalidUser, message: authInvalidUser }, invalidUserMessage)
+
     return user.data()
   },
   getContacts: async (favorite: boolean, userId: string) => {
@@ -42,21 +48,21 @@ const ContactsRepository: IContactsRepository = {
   },
   updateUser: async ({ userId, username, email, number }: IUser) => {
     const id = grabIdFromUserId(userId)
-  
+
     await defaultAdmin.auth().updateUser(id, {
       displayName: username
     })
 
     const userDoc = firestore.doc(`${env}/${userId}`)
     const user: IUser = { userId, username, id, email, number }
-  
+
     if ((await userDoc.get()).exists) {
       await userDoc.delete()
     }
-    
+
     userDoc.set(user)
     const userDto: UserDto = { user }
-    
+
     return resolveDto(userDto, "user")
   }
 }
