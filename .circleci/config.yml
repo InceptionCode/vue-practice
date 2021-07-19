@@ -89,6 +89,10 @@ jobs:
     steps:
       - swissknife/sk-checkout:
           swissknife_sha: << pipeline.parameters.swissknife_sha >>
+      # Install dependencies
+      - restore_cache: *install_restore_cache
+      - run: *install_run
+      - save_cache: *install_save_cache
       - run:
           name: Run lint
           command: |
