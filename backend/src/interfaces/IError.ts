@@ -1,5 +1,5 @@
 interface IError {
-  Code: string
+  Code: string | number
   Message: string
   ErrorDetails?: string
 }

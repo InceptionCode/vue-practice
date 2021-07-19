@@ -6,14 +6,14 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 
 import * as routes from './routes'
-import ServerError from "./error/error";
+import ServerError from './error/error';
 
 export const defaultAdmin = admin.initializeApp()
 const env: string = process.env.ENVIRONMENT
 
 console.info(`In ${env} environment`)
 
-const isDev = env === "dev"
+const isDev = env === 'dev'
 
 console.info('Defining server')
 
@@ -37,4 +37,4 @@ if (isDev) {
   server.listen(3000)
 }
 
-exports.api = functions.runWith({ memory: "2GB", timeoutSeconds: 120 }).https.onRequest(server)
+exports.api = functions.runWith({ memory: '2GB', timeoutSeconds: 120 }).https.onRequest(server)

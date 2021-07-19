@@ -14,7 +14,7 @@ import {
   invalidUserMessage
 } from '../../../common/constants/errorConstants'
 import { resolveDto } from '../utils/dtoUtils'
-import ServerError from "../error/error";
+import ServerError from '../error/error';
 
 const firestore = new Firestore()
 const env: string = process.env.ENVIRONMENT
@@ -25,7 +25,7 @@ const ContactsRepository: IContactsRepository = {
     const user: DocumentSnapshot<UserDto> = await firestore.doc(`${env}/${userId}`).get()
 
     if (!user.exists)
-      throw new ServerError({ name: invalidUser, message: authInvalidUser }, invalidUserMessage)
+    {throw new ServerError({ name: invalidUser, message: authInvalidUser }, invalidUserMessage)}
 
     return user.data()
   },
@@ -63,7 +63,7 @@ const ContactsRepository: IContactsRepository = {
     userDoc.set(user)
     const userDto: UserDto = { user }
 
-    return resolveDto(userDto, "user")
+    return resolveDto(userDto, 'user')
   }
 }
 
