@@ -5,7 +5,7 @@ export default class ValidationError implements IError {
   public Message = 'Not found'
   public ErrorDetails: string | null
 
-  constructor(message: string, ErrorDetails = null) {
+  constructor(message: string, ErrorDetails: string = null) {
     this.Message = message
     this.ErrorDetails = ErrorDetails
   }

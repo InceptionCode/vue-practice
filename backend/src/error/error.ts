@@ -7,7 +7,7 @@ export default class ServerError implements IError {
   public Message: string
   public ErrorDetails: string | null
 
-  constructor(error: Error, message: string = ServerError.InternalServerError, code: string | number) {
+  constructor(error: Error, message: string = ServerError.InternalServerError, code: string | number = null) {
     this.Code = code
     this.Message = message
     this.ErrorDetails = `${error.name} ${error.message}`

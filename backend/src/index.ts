@@ -22,7 +22,7 @@ const server = express()
 server.use(cors({ origin: true }))
   .use(bodyParser.urlencoded({ extended: false }))
   .use(bodyParser.json())
-  .use((err, req, res, next) => {
+  .use((err: any, req: any, res: any, next: any) => {
   // logic
     if (err.statusCode === '500') {
       next(new ServerError(err));

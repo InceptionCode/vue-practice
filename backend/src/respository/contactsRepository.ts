@@ -4,7 +4,7 @@ import ContactsDto from '../../../common/dtos/ContactsDto'
 
 import { grabIdFromUserId } from '../../../common/utils/stringUtils'
 
-import { Firestore, QuerySnapshot, DocumentSnapshot } from '@google-cloud/firestore'
+import { Firestore, QuerySnapshot, QueryDocumentSnapshot, DocumentSnapshot } from '@google-cloud/firestore'
 import { defaultAdmin } from '../index'
 import IUser from '../../../common/interfaces/IUser'
 import {
@@ -21,7 +21,7 @@ const env: string = process.env.ENVIRONMENT
 
 
 const ContactsRepository: IContactsRepository = {
-  getUser: async userId => {
+  getUser: async (userId: string) => {
     const user: DocumentSnapshot<UserDto> = await firestore.doc(`${env}/${userId}`).get()
 
     if (!user.exists)
@@ -33,9 +33,9 @@ const ContactsRepository: IContactsRepository = {
     const contacts: QuerySnapshot<ContactsDto> = await firestore.collection(`${env}/${userId}/contacts`)
       .where('favorite', '==', favorite)
       .get()
-    return contacts.docs.map(contact => contact.data())
+    return contacts.docs.map((contact: QueryDocumentSnapshot<ContactsDto>) => contact.data())
   },
-  getContact: async (userId, name: string) => {
+  getContact: async (userId: string, name: string) => {
     const id = grabIdFromUserId(userId)
     const contacts: DocumentSnapshot<ContactsDto> = await firestore.doc(`${env}/${userId}/contacts/contacts_${id}`).get()
     const contact = contacts.get(name.toLowerCase())

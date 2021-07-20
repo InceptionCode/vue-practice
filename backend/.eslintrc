@@ -25,6 +25,7 @@
       }
     ],
     "no-empty": "error",
+    "no-unused-vars": "error",
     "@typescript-eslint/no-inferrable-types": ["error",  {  "ignoreParameters": true }],
     "@typescript-eslint/no-confusing-non-null-assertion": "error",
     "quote-props": [

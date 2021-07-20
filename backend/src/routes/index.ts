@@ -2,8 +2,8 @@ import * as express from 'express';
 
 import ContactsRepository from '../respository/contactsRepository'
 
-export const register = (app: express.Application) => {
-  const oidc = app.locals.oidc;
+export const register = (app: express.Application): void => {
+  // const oidc = app.locals.oidc;
 
   // define a route handler for the default home page
   app.get('/contacts/:userid', async (req: express.Request, res: express.Response) => {
