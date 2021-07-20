@@ -37,8 +37,8 @@ export const actions = {
   // Logs out the current user.
   async logOut({ commit }) {
     debugger
-   const sign = await authInstance().signOut()
-   console.log(sign)
+    const sign = await authInstance().signOut()
+    console.log(sign)
     commit('SET_CURRENT_USER', null)
   },
 

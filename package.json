@@ -2,8 +2,27 @@
   "name": "vue-practice",
   "version": "1.0.0",
   "private": true,
-  "workspaces": ["backend", "frontend_vue-todo", "frontend_vuex-blackbook"],
+  "workspaces": [
+    "backend",
+    "frontend/*"
+  ],
+  "scripts": {
+    "frontend": "yarn workspace frontend start",
+    "backend": "yarn workspace backend start",
+    "lint:vue-todo": "yarn workspace vue-todo lint",
+    "lint:vuex-blackbook": "yarn workspace vuex-blackbook lint",
+    "lint:all:frontend": "concurrently --kill-others-on-fail \"yarn lint:vue-todo\" \"yarn lint:vuex-blackbook\"",
+    "lint:all:backend": "yarn workspace backend lint",
+    "lint": "run-s lint:all:*",
+    "start": "concurrently --kill-others-on-fail \"yarn backend\"  \"yarn frontend\""
+  },
+  "devDependencies": {
+    "npm-run-all": "4.1.x"
+  },
   "repository": "git@github.com:InceptionCode/vue-practice.git",
   "author": "Darrell Washington <darrellwjr.com@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^6.2.0"
+  }
 }

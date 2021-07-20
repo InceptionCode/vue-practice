@@ -46,6 +46,6 @@ module.exports = {
     // Allow SCSS and CSS module keywords beginning with `@`
     'at-rule-no-unknown': null,
     'scss/at-rule-no-unknown': true,
-    "unicode-bom": "never"
+    'unicode-bom': 'never',
   },
 }

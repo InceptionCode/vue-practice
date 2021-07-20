@@ -84,9 +84,9 @@ jobs:
   lint:
     <<: *vm_settings
     parameters:
-      dir:
+      workflow:
         type: string
-        description: The directory to run action for.
+        description: The workflow to run action for.
     steps:
       - swissknife/sk-checkout:
           swissknife_sha: << pipeline.parameters.swissknife_sha >>
@@ -97,8 +97,7 @@ jobs:
       - run:
           name: Run lint
           command: |
-            cd << parameters.dir >>
-            yarn lint
+            yarn lint:all:<< parameters.workflow >>
     # lint commands for correct package.
 
   test:
@@ -218,7 +217,7 @@ workflows:
     when: << pipeline.parameters.run_backend >>
     jobs:
       - lint:
-          dir: backend
+          workflow: backend
           name: lint
       - test:
           dir: backend
@@ -251,7 +250,7 @@ workflows:
     when: << pipeline.parameters.run_frontend >>
     jobs:
       - lint:
-          dir: frontend
+          workflow: frontend
           name: lint
       - test:
           dir: frontend

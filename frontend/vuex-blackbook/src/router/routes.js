@@ -5,7 +5,7 @@ export default [
     path: '/',
     name: 'login',
     component: () => lazyLoadView(import('@views/login.vue')),
-      meta: {
+    meta: {
       beforeResolve(routeTo, routeFrom, next) {
         // If the user is already logged in
         if (store.getters['auth/loggedIn']) {
@@ -21,7 +21,7 @@ export default [
   {
     path: '/blackbook',
     name: 'home',
-    component: () => lazyLoadView(import('@views/home.vue'))
+    component: () => lazyLoadView(import('@views/home.vue')),
   },
   {
     path: '/profile',
