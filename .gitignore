@@ -8,7 +8,6 @@ Thumbs.db
 /tests/e2e/screenshots/
 /tests/unit/coverage/
 jsconfig.json
-tsconfig.json
 
 # Local Env Files
 .env.local
