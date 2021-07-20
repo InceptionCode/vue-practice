@@ -2,12 +2,13 @@ version: 2.1
 
 orbs:
   swissknife: roopakv/swissknife@0.62.0
+  browser-tools: circleci/browser-tools@1.1.0
 
 # Setup
 vm_settings: &vm_settings
   docker:
     # https://circleci.com/docs/2.0/circleci-images/#nodejs
-    - image: circleci/node:latest
+    - image: cimg/node:16.5.0-browsers
 
 build_requires: &build_requires
   requires: [lint, test, test_e2e]
@@ -135,6 +136,7 @@ jobs:
       - swissknife/sk-checkout:
           swissknife_sha: << pipeline.parameters.swissknife_sha >>
       # Install dependencies
+      - browser-tools/install-browser-tools
       - restore_cache: *install_restore_cache
       - run: *install_run
       - save_cache: *install_save_cache
@@ -161,6 +163,7 @@ jobs:
       - checkout
 
       # Install dependencies
+      - browser-tools/install-browser-tools
       - restore_cache: *install_restore_cache
       - run: *install_run
       - save_cache: *install_save_cache
@@ -182,6 +185,7 @@ jobs:
       - checkout
 
       # Install dependencies
+      - browser-tools/install-browser-tools
       - restore_cache: *install_restore_cache
       - run: *install_run
       - save_cache: *install_save_cache
