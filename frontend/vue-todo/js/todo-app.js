@@ -1,4 +1,5 @@
-const app = new Vue({
+// eslint-disable-next-line no-unused-vars
+const TodoApp = new Vue({
   el: '#app',
   data: {
     todos: null,
@@ -35,11 +36,8 @@ const app = new Vue({
     this.todos = JSON.parse(storedTodos)
   },
   methods: {
-    clearInput() {
-      this.input = '';
-    },
     addTodo() {
-      const todo = { id: Math.random(), text: this.input }
+      const todo = {id: Math.random(), text: this.input}
 
       if (this.input !== '') {
         if (this.editing) {
@@ -50,7 +48,7 @@ const app = new Vue({
         this.todos.push(todo);
       }
 
-      this.clearInput();
+      this.input = '';
     },
     deleteTodo(id) {
       const newTodos = this.todos.filter(todo => todo.id !== id);
@@ -71,9 +69,9 @@ const app = new Vue({
       this.todos = completedList
     },
     createNewList(List) {
-      List.forEach(value =>{
+      List.forEach(value => {
         const id = value[1];
-        const obj =  {
+        const obj = {
           id,
           text: value[0]
         };
@@ -90,7 +88,4 @@ const app = new Vue({
       this.todos = this.todos.reverse()
     }
   }
-
-});
-
-export default app
+})

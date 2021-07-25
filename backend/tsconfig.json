@@ -17,5 +17,6 @@
     "lib": ["es2018", "ESNext.AsyncIterable", "dom"],
     "esModuleInterop": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["lib","src/__tests__/*"]
 }

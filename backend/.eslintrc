@@ -52,6 +52,13 @@
       }
     ],
     "@typescript-eslint/explicit-function-return-type": "error"
+  },
+  "globals": {
+    "process": false,
+    "module": false,
+    "describe": false,
+    "it": false,
+    "expect": false
   }
 }
 

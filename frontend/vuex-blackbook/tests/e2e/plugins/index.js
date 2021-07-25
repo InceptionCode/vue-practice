@@ -1,5 +1,15 @@
 // https://docs.cypress.io/guides/guides/plugins-guide.html
+
+const { startDevServer } = require('@cypress/webpack-dev-server')
+const webpackConfig = require('@vue/cli-service/webpack.config')
+
 module.exports = (on, config) => {
+  on('dev-server:start', (options) =>
+    startDevServer({
+      options,
+      webpackConfig,
+    })
+  )
   // Dynamic configuration
   // https://docs.cypress.io/guides/references/configuration.html
   return Object.assign({}, config, {
@@ -40,7 +50,7 @@ module.exports = (on, config) => {
     // Main Directories
     // https://docs.cypress.io/guides/references/configuration.html#Folders-Files
     // ===
-    supportFile: 'tests/e2e/support/setup.js',
+    supportFile: 'tests/e2e/support/setup.ts',
     integrationFolder: 'tests/e2e/specs',
     fixturesFolder: 'tests/e2e/fixtures',
     // ===

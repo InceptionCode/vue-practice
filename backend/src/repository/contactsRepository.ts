@@ -16,6 +16,8 @@ import {
 import { resolveDto } from '../utils/dtoUtils'
 import ServerError from '../error/error';
 
+const invalidUserError = { name: invalidUser, message: authInvalidUser };
+
 const firestore = new Firestore()
 const env: string = process.env.ENVIRONMENT
 
@@ -25,15 +27,21 @@ const ContactsRepository: IContactsRepository = {
     const user: DocumentSnapshot<UserDto> = await firestore.doc(`${env}/${userId}`).get()
 
     if (!user.exists)
-    {throw new ServerError({ name: invalidUser, message: authInvalidUser }, invalidUserMessage)}
+    {
+      throw new ServerError(invalidUserError, invalidUserMessage)}
 
     return user.data()
   },
   getContacts: async (favorite: boolean, userId: string) => {
-    const contacts: QuerySnapshot<ContactsDto> = await firestore.collection(`${env}/${userId}/contacts`)
-      .where('favorite', '==', favorite)
-      .get()
-    return contacts.docs.map((contact: QueryDocumentSnapshot<ContactsDto>) => contact.data())
+    try {
+      const contacts: QuerySnapshot<ContactsDto> = await firestore.collection(`${env}/${userId}/contacts`)
+        .where('favorite', '==', favorite)
+        .get()
+      return contacts.docs.map((contact: QueryDocumentSnapshot<ContactsDto>) => contact.data())
+    }
+    catch (err) {
+      throw new ServerError(err, invalidUserMessage)
+    }
   },
   getContact: async (userId: string, name: string) => {
     const id = grabIdFromUserId(userId)
@@ -41,7 +49,7 @@ const ContactsRepository: IContactsRepository = {
     const contact = contacts.get(name.toLowerCase())
 
     if (contact === undefined) {
-      throw new Error(contactNotFound)
+      throw new ServerError(invalidUserError, contactNotFound, 404)
     }
 
     return contact

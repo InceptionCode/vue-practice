@@ -86,7 +86,7 @@ jobs:
     parameters:
       workflow:
         type: string
-        description: The workflow to run action for.
+        description: The workflow to run the action for.
     steps:
       - swissknife/sk-checkout:
           swissknife_sha: << pipeline.parameters.swissknife_sha >>
@@ -103,9 +103,9 @@ jobs:
   test:
     <<: *vm_settings
     parameters:
-      dir:
+      workflow:
         type: string
-        description: The directory to run action for.
+        description: The workflow to run the action for.
     steps:
       - swissknife/sk-checkout:
           swissknife_sha: << pipeline.parameters.swissknife_sha >>
@@ -116,8 +116,7 @@ jobs:
       - run:
           name: Run test
           command: |
-            cd << parameters.dir >>
-            yarn unit-test
+            yarn test:all:<< parameters.workflow >>
 
       # Store test artifacts
       - store_artifacts:
@@ -220,7 +219,7 @@ workflows:
           workflow: backend
           name: lint
       - test:
-          dir: backend
+          workflow: backend
           name: test
       - test_e2e:
           dir: backend
@@ -253,7 +252,7 @@ workflows:
           workflow: frontend
           name: lint
       - test:
-          dir: frontend
+          workflow: frontend
           name: test
       - test_e2e:
           dir: frontend

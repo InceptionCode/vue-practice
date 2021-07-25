@@ -1,0 +1,14 @@
+{
+  "pluginsFile": "tests/e2e/plugins/index.js",
+  "chromeWebSecurity": true,
+  "component": {
+    "componentFolder": "src/components",
+    "testFiles": "**/*.unit.js",
+    "viewportHeight": 600,
+    "viewportWidth": 800
+  },
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
+  }
+}

@@ -70,6 +70,7 @@ module.exports = {
       },
       env: { jest: true },
       globals: {
+        cy: false,
         mount: false,
         shallowMount: false,
         shallowMountView: false,

@@ -4,11 +4,11 @@ import UserDto from '../../../common/dtos/UserDto'
 import IUser from '../../../common/interfaces/IUser'
 
 
-interface ITodoRepository {
+interface IContactsRepository {
   getContacts: (favorites: boolean, userId: string) => Promise<ContactsDto[]>
   getContact: (userId: string, name: string) => Promise<ContactsDto | undefined>
   getUser: (userId: string) => Promise<UserDto | undefined>,
   updateUser(user: IUser): Promise<UserDto | undefined>
 }
 
-export default ITodoRepository
+export default IContactsRepository

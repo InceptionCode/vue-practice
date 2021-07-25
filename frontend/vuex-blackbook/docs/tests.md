@@ -53,7 +53,7 @@ This may seem strange at first, but it makes poor test coverage obvious from a g
 
 ### Unit test helpers
 
-See [`tests/unit/setup.js`](../tests/unit/setup.js) for a list of helpers, including documentation in comments.
+See [`tests/unit/setup.ts`](../tests/unit/setup.js) for a list of helpers, including documentation in comments.
 
 ### Unit test mocks
 

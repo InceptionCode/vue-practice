@@ -10,8 +10,8 @@ Thumbs.db
 jsconfig.json
 
 # Local Env Files
-.env.local
-.env.*.local
+*.env
+*.env.*.local
 
 # Log Files
 logs
@@ -76,9 +76,6 @@ typings/
 
 # Yarn Integrity file
 .yarn-integrity
-
-# dotenv environment variables file
-.env
 
 # next.js build output
 .next

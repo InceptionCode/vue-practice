@@ -1,12 +1,12 @@
 import type IError from '../interfaces/IError'
 
 export default class ValidationError implements IError {
-  public Code = '400'
-  public Message = 'Not found'
-  public ErrorDetails: string | null
+  public code = '400'
+  public message = 'Not found'
+  public errorDetails: string | null
 
   constructor(message: string, ErrorDetails: string = null) {
-    this.Message = message
-    this.ErrorDetails = ErrorDetails
+    this.message = message
+    this.errorDetails = ErrorDetails
   }
 }

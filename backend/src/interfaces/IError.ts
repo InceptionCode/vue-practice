@@ -1,7 +1,7 @@
 interface IError {
-  Code: string | number
-  Message: string
-  ErrorDetails?: string
+  code: string | number
+  message: string
+  errorDetails?: string
 }
 
 export default IError

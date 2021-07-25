@@ -1,15 +1,15 @@
 import type IError from '../interfaces/IError'
 
 export default class ServerError implements IError {
-  private static InternalServerError = 'Oops something went wrong on our end. Internal Server Error'
+  public static InternalServerError = 'Oops something went wrong on our end. Internal Server Error'
 
-  public Code: string | number | null = '500'
-  public Message: string
-  public ErrorDetails: string | null
+  public code: number | string = 500
+  public message: string
+  public errorDetails: string | null
 
-  constructor(error: Error, message: string = ServerError.InternalServerError, code: string | number = null) {
-    this.Code = code
-    this.Message = message
-    this.ErrorDetails = `${error.name} ${error.message}`
+  constructor(error: Error, message: string = ServerError.InternalServerError, code: number | string = 500) {
+    this.code = code
+    this.message = message
+    this.errorDetails = `${error.name || ''} ${error.message}`
   }
 }

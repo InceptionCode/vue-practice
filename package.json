@@ -8,12 +8,17 @@
   ],
   "scripts": {
     "frontend": "yarn workspace frontend start",
-    "backend": "yarn workspace backend start",
+    "backend:serve": "yarn workspace backend serve",
     "lint:vue-todo": "yarn workspace vue-todo lint",
     "lint:vuex-blackbook": "yarn workspace vuex-blackbook lint",
     "lint:all:frontend": "concurrently --kill-others-on-fail \"yarn lint:vue-todo\" \"yarn lint:vuex-blackbook\"",
     "lint:all:backend": "yarn workspace backend lint",
-    "lint": "run-s lint:all:*",
+    "test:vue-todo": "yarn workspace vue-todo test",
+    "test:vuex-blackbook": "yarn workspace vuex-blackbook test",
+    "test:all:frontend": "concurrently --kill-others-on-fail \"yarn test:vue-todo\" \"yarn test:vuex-blackbook\"",
+    "test:all:backend": "yarn workspace backend test",
+    "lint": "yarn workspaces run lint",
+    "test": "yarn workspaces run test",
     "start": "concurrently --kill-others-on-fail \"yarn backend\"  \"yarn frontend\""
   },
   "devDependencies": {

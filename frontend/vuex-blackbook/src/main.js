@@ -14,6 +14,8 @@ const firebaseConfig = {
   projectId: process.env.VUE_APP_PROJECT_ID,
 }
 
+console.log(process.env)
+
 firebase.initializeApp(firebaseConfig)
 export const authInstance = firebase.auth
 // Globally register all `_base`-prefixed components
