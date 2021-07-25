@@ -120,7 +120,7 @@ jobs:
 
       # Store test artifacts
       - store_artifacts:
-          path: << parameters.dir >>/tests/unit/coverage
+          path: << parameters.workflow >>/tests/unit/coverage
 
     # test commands for correct package.
 
