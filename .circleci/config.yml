@@ -27,6 +27,7 @@ install_run: &install_run
 fresh_vueCLI_install: &fresh_vueCLI_install
   name: Fresh install @vue/cli unit-jest dependencies
   command: yarn vue@cli:unit:install
+  when: [frontend, << parameters.workflow >>]
 
 install_save_cache: &install_save_cache
   name: Cache installed dependencies
@@ -148,7 +149,7 @@ jobs:
       - run:
           name: Run e2e tests
           # Install libgconf, needed by Cypress' Electron, then run tests
-          command: sudo apt-get install libgconf-2-4 && cd frontend && yarn test-e2e
+          command: sudo apt-get install libgconf-2-4 && yarn workspace vuex-blackbook run test:e2e
         # Store test artifacts
       - store_artifacts:
           path: frontend/tests/e2e/videos

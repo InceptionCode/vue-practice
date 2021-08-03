@@ -1,6 +1,6 @@
 import axios from 'axios'
 // eslint-disable-next-line no-unused-vars
-import { authInstance } from '../../firebase-setup';
+import { authInstance } from '@src/firebase-setup';
 import * as authModule from './auth'
 
 jest.mock('../../firebase-setup.js', () => ({
