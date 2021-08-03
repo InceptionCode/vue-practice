@@ -224,9 +224,6 @@ workflows:
       - test:
           workflow: backend
           name: test
-      - test_e2e:
-          dir: backend
-          name: test_e2e
       - build:
           dir: backend
           name: build
