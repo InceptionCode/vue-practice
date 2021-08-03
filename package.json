@@ -7,8 +7,9 @@
     "frontend/*"
   ],
   "scripts": {
-    "frontend": "yarn workspace frontend start",
+    "frontend:serve": "yarn workspace frontend start",
     "backend:serve": "yarn workspace backend serve",
+    "start": "concurrently --kill-others-on-fail \"yarn backend\"  \"yarn frontend\""
     "lint:vue-todo": "yarn workspace vue-todo lint",
     "lint:vuex-blackbook": "yarn workspace vuex-blackbook lint",
     "lint:all:frontend": "concurrently --kill-others-on-fail \"yarn lint:vue-todo\" \"yarn lint:vuex-blackbook\"",
@@ -19,7 +20,7 @@
     "test:all:backend": "yarn workspace backend test",
     "lint": "yarn workspaces run lint",
     "test": "yarn workspaces run test",
-    "start": "concurrently --kill-others-on-fail \"yarn backend\"  \"yarn frontend\""
+    "vue@cli:unit:install": "yarn workspace vuex-blackbook remove @vue/cli-plugin-unit-jest && yarn workspace vuex-blackbook add --dev @vue/cli-plugin-unit-jest"
   },
   "devDependencies": {
     "npm-run-all": "4.1.x"

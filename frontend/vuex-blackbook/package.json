@@ -54,7 +54,6 @@
     "vuex": "3.1.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.8",
     "@cypress/vue": "^2.2.3",
     "@cypress/webpack-dev-server": "^1.4.0",
     "@vue/cli-plugin-babel": "4.2.x",
@@ -93,8 +92,7 @@
   },
   "resolutions": {
     "cypress": "^8.0.0",
-    "@vue/cli-plugin-unit-jest/jest": "25.1.x",
-    "@vue/cli-plugin-unit-jest/babel-jest": "25.1.x"
+    "@vue/cli-plugin-unit-jest/jest": "25.1.x"
   },
   "engines": {
     "node": ">=10.13.3",
