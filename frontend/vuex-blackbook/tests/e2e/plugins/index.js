@@ -50,7 +50,7 @@ module.exports = (on, config) => {
     // Main Directories
     // https://docs.cypress.io/guides/references/configuration.html#Folders-Files
     // ===
-    supportFile: 'tests/e2e/support/setup.ts',
+    supportFile: 'tests/e2e/support/setup.js',
     integrationFolder: 'tests/e2e/specs',
     fixturesFolder: 'tests/e2e/fixtures',
     // ===

@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { authInstance } from '@/src/main'
+// NOTE: Fix import below for tests`
+import { authInstance } from '@/src/firebase-setup'
 
 export const state = {
   currentUser: getSavedState('auth.currentUser'),

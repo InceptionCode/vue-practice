@@ -63,7 +63,7 @@ module.exports = {
       },
     },
     {
-      files: ['**/*.unit.js'],
+      files: ['**/*.unit.js', '**/*.spec.js'],
       parserOptions: {
         parser: 'babel-eslint',
         sourceType: 'module',

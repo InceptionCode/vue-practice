@@ -3,7 +3,7 @@
   "chromeWebSecurity": true,
   "component": {
     "componentFolder": "src/components",
-    "testFiles": "**/*.unit.js",
+    "testFiles": "**/*.spec.js",
     "viewportHeight": 600,
     "viewportWidth": 800
   },

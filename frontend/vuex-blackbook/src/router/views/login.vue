@@ -1,11 +1,12 @@
 <script>
+// NOTE: Fix import below
 import 'firebaseui/dist/firebaseui.css'
 import * as firebaseui from 'firebaseui'
 
 import Layout from '@layouts/main.vue'
 import { authMethods } from '@state/helpers'
 import appConfig from '@src/app.config'
-import { authInstance } from '@/src/main'
+import { authInstance } from '@/src/firebase-setup'
 
 export default {
   uiConfig: {

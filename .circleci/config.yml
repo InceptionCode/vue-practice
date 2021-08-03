@@ -121,6 +121,7 @@ jobs:
       # Store test artifacts
       - store_artifacts:
           path: << parameters.workflow >>/tests/unit/coverage
+          destination: artifacts/<< parameters.workflow >>/coverage
 
     # test commands for correct package.
 
@@ -146,8 +147,10 @@ jobs:
         # Store test artifacts
       - store_artifacts:
           path: frontend/tests/e2e/videos
+          destination: artifacts/tests_e2e/videos
       - store_artifacts:
           path: frontend/tests/e2e/screenshots
+          destination: artifacts/tests_e2e/screenshots
 
     # e2e test commands for correct package.
 

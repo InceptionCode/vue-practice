@@ -1,4 +1,4 @@
-describe('Authentication', () => {
+describe.skip('Authentication', () => {
   it('login link exists on the home page when logged out', () => {
     cy.visit('/')
     cy.contains('a', 'Log in').should('have.attr', 'href', '/login')
