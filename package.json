@@ -9,7 +9,7 @@
   "scripts": {
     "frontend:serve": "yarn workspace frontend start",
     "backend:serve": "yarn workspace backend serve",
-    "start": "concurrently --kill-others-on-fail \"yarn backend\"  \"yarn frontend\""
+    "start": "concurrently --kill-others-on-fail \"yarn backend\"  \"yarn frontend\"",
     "lint:vue-todo": "yarn workspace vue-todo lint",
     "lint:vuex-blackbook": "yarn workspace vuex-blackbook lint",
     "lint:all:frontend": "concurrently --kill-others-on-fail \"yarn lint:vue-todo\" \"yarn lint:vuex-blackbook\"",
