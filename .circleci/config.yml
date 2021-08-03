@@ -128,7 +128,7 @@ jobs:
 
       # Store test artifacts
       - store_artifacts:
-          path: << parameters.workflow >>/tests/unit/coverage
+          path: << parameters.workflow >>/**/tests/unit/coverage
           destination: artifacts/<< parameters.workflow >>/coverage
 
     # test commands for correct package.
