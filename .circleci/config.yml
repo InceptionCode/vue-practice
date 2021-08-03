@@ -27,7 +27,7 @@ install_run: &install_run
 fresh_vueCLI_install: &fresh_vueCLI_install
   name: Fresh install @vue/cli unit-jest dependencies
   command: |
-    if [<< parameters.workflow >> = frontend]; then
+    if [ "<< parameters.workflow >>" = "frontend" ]; then
         yarn vue@cli:unit:install
       fi
 
