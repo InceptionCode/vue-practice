@@ -9,6 +9,7 @@ describe('@components/_base-button', () => {
         default: slotContent,
       },
     })
+
     cy.contains('foo')
   })
 })
