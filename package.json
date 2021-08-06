@@ -1,12 +1,41 @@
 {
   "name": "vue-practice",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend/*"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "lite-server -c bs-config.js"
+    "frontend:serve": "yarn workspace frontend start",
+    "backend:serve": "yarn workspace backend serve",
+    "start": "concurrently --kill-others-on-fail \"yarn backend\"  \"yarn frontend\"",
+    "lint:vue-todo": "yarn workspace vue-todo lint",
+    "lint:vuex-blackbook": "yarn workspace vuex-blackbook lint",
+    "lint:all:frontend": "concurrently --kill-others-on-fail \"yarn lint:vue-todo\" \"yarn lint:vuex-blackbook\"",
+    "lint:all:backend": "yarn workspace backend lint",
+    "test:vue-todo": "yarn workspace vue-todo test:ci",
+    "test:vuex-blackbook": "yarn workspace vuex-blackbook test:ci",
+    "build:vue-todo": "yarn workspace vue-todo build",
+    "build:vuex-blackbook": "yarn workspace vuex-blackbook build:ci",
+    "test:all:frontend": "concurrently --kill-others-on-fail \"yarn test:vue-todo\" \"yarn test:vuex-blackbook\"",
+    "test:all:backend": "yarn workspace backend test",
+    "build:all:backend": "echo 'Build backend'",
+    "build:all:frontend": "concurrently --kill-others-on-fail \"yarn build:vue-todo\" \"yarn build:vuex-blackbook\"",
+    "lint": "yarn workspaces run lint",
+    "test": "yarn workspaces run test",
+    "vue@cli:unit:install": "yarn workspace vuex-blackbook remove @vue/cli-plugin-unit-jest && yarn workspace vuex-blackbook add --dev @vue/cli-plugin-unit-jest"
   },
-  "author": "Darrell Washington Jr.",
-  "license": "ISC"
+  "devDependencies": {
+    "npm-run-all": "4.1.x"
+  },
+  "repository": "git@github.com:InceptionCode/vue-practice.git",
+  "author": "Darrell Washington <darrellwjr.com@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^6.2.0"
+  },
+  "gitHooks": {
+    "pre-commit": "cross-env PRE_COMMIT=true yarn lint"
+  }
 }
