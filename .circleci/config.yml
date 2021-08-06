@@ -220,7 +220,7 @@ workflows:
       - build:
           dir: backend
           name: build
-          <<: *build_requires
+          requires: [lint, test]
           <<: *filter_only_master
       - deploy_approval:
           <<: *vm_settings
