@@ -1,0 +1,271 @@
+version: 2.1
+
+orbs:
+  swissknife: roopakv/swissknife@0.62.0
+  browser-tools: circleci/browser-tools@1.1.0
+
+# Setup
+vm_settings: &vm_settings
+  docker:
+    # https://circleci.com/docs/2.0/circleci-images/#nodejs
+    - image: cimg/node:16.5.0-browsers
+
+build_requires: &build_requires
+  requires: [lint, test, test_e2e]
+
+install_restore_cache: &install_restore_cache
+  name: Restore cached dependencies
+  keys:
+    - dependencies-{{ checksum "yarn.lock" }}
+    # Fall back to using the latest cache if no exact match is found
+    - dependencies
+
+install_run: &install_run
+  name: Install dependencies with Yarn, purely from the lockfile
+  command: yarn install --frozen-lockfile
+
+fresh_vueCLI_install: &fresh_vueCLI_install
+  name: Fresh install @vue/cli unit-jest dependencies
+  command: |
+    if [ "<< parameters.workflow >>" = "frontend" ]; then
+        yarn vue@cli:unit:install
+      fi
+
+install_save_cache: &install_save_cache
+  name: Cache installed dependencies
+  paths:
+    - ~/.cache
+  key: dependencies-{{ checksum "yarn.lock" }}
+
+build_persist_step: &build_persist_step
+  persist_to_workspace:
+    root: << parameters.dir >>/workspace
+    paths:
+      - build-output
+
+build_artifacts_step: &build_artifacts_step
+  store_artifacts:
+    path: << parameters.dir >>/dist
+
+filter_only_master: &filter_only_master
+  filters:
+    branches:
+      only: master
+
+filter_ignore_master: &filter_ignore_master
+  filters:
+    branches:
+      ignore: master
+
+parameters:
+  run_frontend:
+    default: false
+    type: boolean
+  run_backend:
+    default: false
+    type: boolean
+  run_trigger_workflow:
+    default: true
+    type: boolean
+  swissknife_sha:
+    default: ""
+    type: string
+
+jobs:
+  trigger-needed-workflows:
+    <<: *vm_settings
+    steps:
+      - checkout
+      - swissknife/trigger-workflows-for-all-modified:
+          base-branch: $CIRCLE_BRANCH
+          run-mode-for-base-branch: run_for_last_commit
+          use-divergence-point: true
+          code-param-name-map: '
+            [
+              {"regex": "^(frontend|common).*", "param_name": "run_frontend"},
+              {"regex": "^(backend|common).*", "param_name": "run_backend"}
+            ]'
+          additional-param-map: '{"run_trigger_workflow": false}'
+          use-swissknife-sha: true
+
+  lint:
+    <<: *vm_settings
+    parameters:
+      workflow:
+        type: string
+        description: The workflow to run the action for.
+    steps:
+      - swissknife/sk-checkout:
+          swissknife_sha: << pipeline.parameters.swissknife_sha >>
+      # Install dependencies
+      - restore_cache: *install_restore_cache
+      - run: *install_run
+      - save_cache: *install_save_cache
+      - run:
+          name: Run lint
+          command: |
+            yarn lint:all:<< parameters.workflow >>
+    # lint commands for correct package.
+
+  test:
+    <<: *vm_settings
+    parameters:
+      workflow:
+        type: string
+        description: The workflow to run the action for.
+    steps:
+      - swissknife/sk-checkout:
+          swissknife_sha: << pipeline.parameters.swissknife_sha >>
+      # Install dependencies
+      - restore_cache: *install_restore_cache
+      - run: *install_run
+      - run: *fresh_vueCLI_install
+      - save_cache: *install_save_cache
+      - run:
+          name: Run test
+          command: |
+            yarn test:all:<< parameters.workflow >>
+
+      # Store test artifacts
+      - store_artifacts:
+          path: << parameters.workflow >>/tests/unit/coverage
+          destination: artifacts/<< parameters.workflow >>/coverage
+
+      - store_artifacts:
+          path: frontend/vue-todo/tests/unit/coverage
+          destination: artifacts/frontend/vue-todo/coverage
+
+      - store_artifacts:
+          path: frontend/vuex-blackbook/tests/unit/coverage
+          destination: artifacts/frontend/vue-todo/coverage
+
+  test_e2e:
+    <<: *vm_settings
+    parameters:
+      dir:
+        type: string
+        description: The directory to run action for.
+    steps:
+      - swissknife/sk-checkout:
+          swissknife_sha: << pipeline.parameters.swissknife_sha >>
+      # Install dependencies
+      - browser-tools/install-browser-tools
+      - restore_cache: *install_restore_cache
+      - run: *install_run
+      - save_cache: *install_save_cache
+
+      - run:
+          name: Run e2e tests
+          # Install libgconf, needed by Cypress' Electron, then run tests
+          command: sudo apt-get install libgconf-2-4 && yarn workspace vuex-blackbook run test:e2e
+        # Store test artifacts
+      - store_artifacts:
+          path: frontend/tests/e2e/videos
+          destination: artifacts/tests_e2e/videos
+      - store_artifacts:
+          path: frontend/tests/e2e/screenshots
+          destination: artifacts/tests_e2e/screenshots
+
+    # e2e test commands for correct package.
+
+  build:
+    <<: *vm_settings
+    parameters:
+      dir:
+        type: string
+        description: The directory to save artifact.
+    steps:
+      - checkout
+
+      # Install dependencies
+      - browser-tools/install-browser-tools
+      - restore_cache: *install_restore_cache
+      - run: *install_run
+      - save_cache: *install_save_cache
+
+      - run:
+          name: Build
+          command: yarn build:all:<< parameters.dir >>
+
+      # Store build artifacts & persist
+      - <<: *build_persist_step
+      - <<: *build_artifacts_step
+
+  deploy:
+    <<: *vm_settings
+    parameters:
+      dir:
+        type: string
+        description: The directory to grab build workspace.
+
+    steps:
+      - attach_workspace:
+          at: /<< parameters.dir >>/workspace
+        # use prod Build for production deploy
+      - run: |
+          echo /<< parameters.dir >>/workspace/build-output
+
+workflows:
+  version: 2.1
+  backend:
+    when: << pipeline.parameters.run_backend >>
+    jobs:
+      - lint:
+          workflow: backend
+          name: lint
+      - test:
+          workflow: backend
+          name: test
+          requires: [lint]
+      - build:
+          dir: backend
+          name: build
+          requires: [lint, test]
+          <<: *filter_only_master
+      - deploy_approval:
+          <<: *vm_settings
+          requires: [build]
+          name: deploy approval
+          type: approval
+          message: Pending Approval
+          <<: *filter_only_master
+      - deploy:
+          name: deploy
+          dir: backend
+          <<: *filter_only_master
+  frontend:
+    when: << pipeline.parameters.run_frontend >>
+    jobs:
+      - lint:
+          workflow: frontend
+          name: lint
+      - test:
+          workflow: frontend
+          name: test
+          requires: [lint]
+      - test_e2e:
+          dir: frontend
+          name: test_e2e
+          requires: [lint]
+      - build:
+          dir: frontend
+          name: build
+          <<: *build_requires
+          <<: *filter_only_master
+      - deploy_approval:
+          <<: *vm_settings
+          requires: [build]
+          name: deploy approval
+          type: approval
+          message: Pending Approval
+          <<: *filter_only_master
+      - deploy:
+          name: deploy
+          dir: frontend
+          <<: *filter_only_master
+
+  trigger-needed-workflows:
+    when: << pipeline.parameters.run_trigger_workflow >>
+    jobs:
+      - trigger-needed-workflows:
+          context: inception_code_context
