@@ -82,6 +82,7 @@ typings/
 
 # vscode
 .vscode
+.idea
 
 # lite-server
 
