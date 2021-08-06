@@ -1,6 +1,6 @@
 import axios from 'axios'
 // NOTE: Fix import below for tests`
-import { authInstance } from '@/src/firebase-setup'
+// import { authInstance } from '@/src/firebase-setup'
 
 export const state = {
   currentUser: getSavedState('auth.currentUser'),
@@ -37,16 +37,14 @@ export const actions = {
 
   // Logs out the current user.
   async logOut({ commit }) {
-    debugger
-    const sign = await authInstance().signOut()
-    console.log(sign)
+    // const sign = await authInstance().signOut()
+    // console.log(sign)
     commit('SET_CURRENT_USER', null)
   },
 
   // Validates the current user's token and refreshes it
   // with new data from the API.
   validate({ commit, state }) {
-    debugger
     if (!state.currentUser) return Promise.resolve(null)
     return Promise.resolve(state.currentUser)
     // return axios

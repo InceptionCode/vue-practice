@@ -10,7 +10,8 @@
     "lint:all:eslint": "yarn lint:eslint --ext .js",
     "lint": "run-s lint:all:*",
     "test": "jest",
-    "test:ci": "jest --coverage --ci"
+    "test:ci": "jest --coverage --ci",
+    "build": "echo 'Build Vue Todo'"
   },
   "author": "Darrell Washington Jr.",
   "license": "ISC",

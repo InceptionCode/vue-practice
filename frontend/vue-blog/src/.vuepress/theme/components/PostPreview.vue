@@ -39,7 +39,7 @@ export default {
   display block
   text-decoration none !important
   color unset
-  
+
 .title
   font-size 2.2rem
   margin 0 0 0.4em

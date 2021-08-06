@@ -31,9 +31,9 @@
 
     <Blog
       v-else-if="$page.frontmatter.blogList"
-      :pages="$site.pages" 
-      :page-size="$site.themeConfig.pageSize" 
-      :start-page="$site.themeConfig.startPage" 
+      :pages="$site.pages"
+      :page-size="$site.themeConfig.pageSize"
+      :start-page="$site.themeConfig.startPage"
     />
 
     <ArchiveList
@@ -41,8 +41,8 @@
       :pages="$site.pages"
     />
 
-    <Post 
-      v-else-if="$page.frontmatter.blog" 
+    <Post
+      v-else-if="$page.frontmatter.blog"
       :sidebar-items="sidebarItems"
     />
 

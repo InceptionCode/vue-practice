@@ -9,7 +9,7 @@ module.exports = {
 		logo: '/vuepress-blog-logo.png',
 		editLinkText: 'Found a bug? Help me improve this page!',
 		nav: [
-			{ text: 'Home', link: '/' }, 
+			{ text: 'Home', link: '/' },
 			{ text: 'Learn', link: '/learn/' }
 		],
 		version: '0.11.0-beta'

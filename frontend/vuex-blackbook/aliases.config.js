@@ -18,10 +18,11 @@ const aliases = {
 module.exports = {
   webpack: {},
   jest: {
-      '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/tests/unit/support/CSSstub.js',
-      '\\.(css|less|scss|sass)$': '<rootDir>/tests/unit/support/CSSstub.js'
+    '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+      '<rootDir>/tests/unit/support/CSSstub.js',
+    '\\.(css|less|scss|sass)$': '<rootDir>/tests/unit/support/CSSstub.js',
   },
-  jsconfig: {}
+  jsconfig: {},
 }
 
 for (const alias in aliases) {

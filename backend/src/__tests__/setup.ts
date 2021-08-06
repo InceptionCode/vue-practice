@@ -49,4 +49,3 @@ afterAll((done: jest.DoneCallback) => {
   delete require.cache[require.resolve( '../index' )]
   done()
 })
-

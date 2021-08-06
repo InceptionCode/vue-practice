@@ -18,7 +18,7 @@ export default {
 
         if (isNewUser) {
           // Set new user DB & redirect to home
-          console.log(authResult.user)
+          // console.log(authResult.user)
         }
         // Redirect to the originally requested page, or to the home page
         this.$router.push(this.$route.query.redirectFrom || { name: 'home' })

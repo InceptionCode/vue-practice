@@ -30,7 +30,12 @@ routes.register(server)
 
 // Error Middleware
 
-server.use((err: IError | any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+interface IExpressError extends IError {
+  statusCode: string | number
+  stack: unknown
+}
+
+server.use((err: IExpressError, req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (res.headersSent) {
     return next(err)
   }
@@ -43,7 +48,6 @@ server.use((err: IError | any, req: express.Request, res: express.Response, next
   }
 
   if (statusCode === 404) {
-    console.log(new ServerError(err, 'Non existing route', 404))
     res.status(statusCode).json(new ServerError(err, 'Non existing route', 404))
   }
 });

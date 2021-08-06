@@ -5,6 +5,3 @@ excerpt: This post won't appear on the blog list till 2088!
 type: post
 blog: true
 ---
-
-
-

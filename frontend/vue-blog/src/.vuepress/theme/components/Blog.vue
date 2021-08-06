@@ -1,6 +1,6 @@
 <template>
-	<div class="theme-default-content">  
-    <div 
+	<div class="theme-default-content">
+    <div
       v-if="selectedTags.length > 0"
       class="filtered-heading"
     >
@@ -27,9 +27,9 @@
     <div class="pagination">
       <div>
         <a href="#"
-          v-show="currentPage > 0" 
+          v-show="currentPage > 0"
           @click="previousPage"
-          class="button--pagination" 
+          class="button--pagination"
         >
           Newer Posts
         </a>
@@ -75,7 +75,7 @@ export default {
     computed: {
         filteredList() {
             if (this.pages) {
-                
+
                 return this.pages.filter(item => {
                     const isBlogPost = !!item.frontmatter.blog
                     const isReadyToPublish = new Date(item.frontmatter.date) <= new Date()
@@ -83,23 +83,23 @@ export default {
                     let isCurrentLocale = true;
                     if(this.$site.locales) {
                         const localePath = this.$route.path.split('/')[1] || "";
-                        isCurrentLocale = item.relativePath.startsWith(localePath);   
+                        isCurrentLocale = item.relativePath.startsWith(localePath);
                     }
                     // check if tags contain all of the selected tags
                     const hasTags = !!item.frontmatter.tags && this.selectedTags.every((tag) => item.frontmatter.tags.includes(tag))
 
-                    if (!isBlogPost || !isReadyToPublish || (this.selectedTags.length > 0 && !hasTags) || !isCurrentLocale){ 
+                    if (!isBlogPost || !isReadyToPublish || (this.selectedTags.length > 0 && !hasTags) || !isCurrentLocale){
                         return false
                     }
 
                     return true
-                    
+
                 }).sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date))
             }
         },
 
         totalPages() {
-            
+
             return Math.ceil(this.filteredList.length / this.pageSize)
         },
     },

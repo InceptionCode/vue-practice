@@ -5,7 +5,7 @@ export interface IContacts {
 export interface IContact {
   id?: string
   favorite: boolean
-  name: string 
+  name: string
   email: string
   number: string
 }

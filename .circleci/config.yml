@@ -128,10 +128,16 @@ jobs:
 
       # Store test artifacts
       - store_artifacts:
-          path: << parameters.workflow >>/**/tests/unit/coverage
+          path: << parameters.workflow >>/tests/unit/coverage
           destination: artifacts/<< parameters.workflow >>/coverage
 
-    # test commands for correct package.
+      - store_artifacts:
+          path: frontend/vue-todo/tests/unit/coverage
+          destination: artifacts/frontend/vue-todo/coverage
+
+      - store_artifacts:
+          path: frontend/vuex-blackbook/tests/unit/coverage
+          destination: artifacts/frontend/vue-todo/coverage
 
   test_e2e:
     <<: *vm_settings
@@ -178,30 +184,8 @@ jobs:
       - save_cache: *install_save_cache
 
       - run:
-          name: Build for development
-          command: yarn build:dev
-      # store artifacts and persist
-      - <<: *build_persist_step
-      - <<: *build_artifacts_step
-
-  buildProd:
-    <<: *vm_settings
-    parameters:
-      dir:
-        type: string
-        description: The directory to save artifact.
-    steps:
-      - checkout
-
-      # Install dependencies
-      - browser-tools/install-browser-tools
-      - restore_cache: *install_restore_cache
-      - run: *install_run
-      - save_cache: *install_save_cache
-
-      - run:
-          name: Build for development
-          command: yarn build:prod
+          name: Build
+          command: yarn build:all:<< parameters.dir >>
 
       # Store build artifacts & persist
       - <<: *build_persist_step
@@ -232,19 +216,15 @@ workflows:
       - test:
           workflow: backend
           name: test
+          requires: [lint]
       - build:
           dir: backend
           name: build
           <<: *build_requires
-          <<: *filter_ignore_master
-      - buildProd:
-          dir: backend
-          name: build prod
-          <<: *build_requires
           <<: *filter_only_master
       - deploy_approval:
           <<: *vm_settings
-          requires: [build prod]
+          requires: [build]
           name: deploy approval
           type: approval
           message: Pending Approval
@@ -262,22 +242,19 @@ workflows:
       - test:
           workflow: frontend
           name: test
+          requires: [lint]
       - test_e2e:
           dir: frontend
           name: test_e2e
+          requires: [lint]
       - build:
           dir: frontend
           name: build
           <<: *build_requires
-          <<: *filter_ignore_master
-      - buildProd:
-          dir: frontend
-          name: build prod
-          <<: *build_requires
           <<: *filter_only_master
       - deploy_approval:
           <<: *vm_settings
-          requires: [build prod]
+          requires: [build]
           name: deploy approval
           type: approval
           message: Pending Approval

@@ -52,7 +52,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
     return store.dispatch('auth/validate').then((validUser) => {
       // Then continue if the token still represents a valid user,
       // otherwise redirect to login.
-      debugger
+
       validUser ? next() : redirectToLogin()
     })
   }
