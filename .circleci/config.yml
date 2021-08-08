@@ -39,7 +39,7 @@ install_save_cache: &install_save_cache
 
 build_persist_step: &build_persist_step
   persist_to_workspace:
-    root: << parameters.dir >>/workspace
+    root: /<< parameters.dir >>/workspace
     paths:
       - build-output
 
@@ -230,6 +230,8 @@ workflows:
           message: Pending Approval
           <<: *filter_only_master
       - deploy:
+          requires:
+            - deploy approval
           name: deploy
           dir: backend
           <<: *filter_only_master
@@ -260,6 +262,8 @@ workflows:
           message: Pending Approval
           <<: *filter_only_master
       - deploy:
+          requires:
+            - deploy approval
           name: deploy
           dir: frontend
           <<: *filter_only_master
